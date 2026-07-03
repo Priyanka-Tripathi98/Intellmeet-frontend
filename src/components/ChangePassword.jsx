@@ -24,7 +24,7 @@ function ChangePassword() {
       const token = localStorage.getItem("token");
 
       await axios.put(
-        "http://localhost:3001/profile/change-password",
+        "https://intellmeet-backend-vufa.onrender.com/profile/change-password",
         { oldPassword: currentPassword.trim(),
           newPassword: newPassword.trim() },
         { headers: { Authorization: `Bearer ${token}` } }

@@ -12,7 +12,7 @@ function Profile() {
   });
   const [loading, setLoading] = useState(false);
 
-  const API_URL = "http://localhost:3001";
+  const API_URL = "https://intellmeet-backend-vufa.onrender.com";
   const navigate = useNavigate();
   const location = useLocation(); // Used to accurately highlight active sidebar states
 

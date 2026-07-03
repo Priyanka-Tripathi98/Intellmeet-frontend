@@ -214,7 +214,7 @@ function Video() {
             socketRef.current.disconnect();
           }
 
-          socketRef.current = io("http://localhost:3001", {
+          socketRef.current = io("https://intellmeet-backend-vufa.onrender.com", {
             transports: ["websocket"],
             forceNew: true,
             auth: {
@@ -522,9 +522,9 @@ function Video() {
 
   const endCall = async () => {
     try {
-      await axios.post("http://localhost:3001/meetings/end", { roomId });
+      await axios.post("https://intellmeet-backend-vufa.onrender.com/meetings/end", { roomId });
       try {
-        await axios.post("http://localhost:3001/api/ai-summary", {
+        await axios.post("https://intellmeet-backend-vufa.onrender.com/api/ai-summary", {
           text: liveTranscript || "",
           roomId
         });
@@ -572,7 +572,7 @@ function Video() {
       try {
         const token = localStorage.getItem("userToken") || localStorage.getItem("token");
         await axios.post(
-          "http://localhost:3001/meetings/upload-recording",
+          "https://intellmeet-backend-vufa.onrender.com/meetings/upload-recording",
           formData,
           {
             headers: { Authorization: `Bearer ${token}` }
@@ -1113,7 +1113,7 @@ function Video() {
             >
               <Sparkles size={20} />
             </button>
-            
+
            {/* RECORD BUTTON TOGGLE */}
           <button 
             onClick={isRecording ? stopRecording : startRecording} 

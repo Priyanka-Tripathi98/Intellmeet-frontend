@@ -19,7 +19,7 @@ export function Dashboard() {
   const [activeMenu, setActiveMenu] = useState("dashboard");
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "dark");
   
-  const API_URL = "http://localhost:3001";
+  const API_URL = "https://intellmeet-backend-vufa.onrender.com";
   const [userProfile, setUserProfile] = useState(null);
   
   const [showScheduleModal, setShowScheduleModal] = useState(false);
@@ -195,7 +195,7 @@ export function Dashboard() {
           return;
         }
 
-        const response = await axios.get(`http://localhost:3001/profile?t=${Date.now()}`, {
+        const response = await axios.get(`https://intellmeet-backend-vufa.onrender.com/profile?t=${Date.now()}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           }

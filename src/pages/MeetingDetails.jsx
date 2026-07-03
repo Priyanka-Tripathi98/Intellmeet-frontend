@@ -13,7 +13,7 @@ function MeetingDetails() {
       try {
         const token = localStorage.getItem("token");
         const res = await fetch(
-          `http://localhost:3001/meetings/details/${meetingCode}?t=${Date.now()}`,
+          `https://intellmeet-backend-vufa.onrender.com/meetings/details/${meetingCode}?t=${Date.now()}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

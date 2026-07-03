@@ -49,7 +49,7 @@ function Lobby() {
 
   // Socket setup to monitor current active room size
   useEffect(() => {
-    const socket = io("http://localhost:3001"); 
+    const socket = io("https://intellmeet-backend-vufa.onrender.com"); 
     socket.emit("get-participant-count", roomId);
     socket.on("participant-count", (count) => {
       setParticipantCount(count);

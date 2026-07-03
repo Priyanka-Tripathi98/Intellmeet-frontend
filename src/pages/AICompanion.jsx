@@ -37,12 +37,12 @@ const triggerManualSummary = async () => {
   setIsLoading(true);
   try {
     const token = localStorage.getItem("userToken");
-    const response = await fetch("http://localhost:3001/api/ai-summary", {
+    const response = await fetch("https://intellmeet-backend-vufa.onrender.com/api/ai-summary", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ 
         roomId, 
-        text: cleanText // 👈 PASS THE REAL RECORDED TRANSCRIPT HERE!
+        text: cleanText 
       }),
     });
     

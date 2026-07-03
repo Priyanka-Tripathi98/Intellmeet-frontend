@@ -12,7 +12,7 @@ function RecordingsView() {
         setLoading(true);
         const token = localStorage.getItem("token");
         
-        const response = await axios.get(`http://localhost:3001/meetings/user-history?t=${Date.now()}`, {
+        const response = await axios.get(`https://intellmeet-backend-vufa.onrender.com/meetings/user-history?t=${Date.now()}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
 
@@ -41,7 +41,7 @@ function RecordingsView() {
     try {
       const token = localStorage.getItem("token");
       
-      const response = await axios.delete(`http://localhost:3001/meetings/recording/${meetingId}`, {
+      const response = await axios.delete(`https://intellmeet-backend-vufa.onrender.com/meetings/recording/${meetingId}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
@@ -186,10 +186,10 @@ function RecordingsView() {
                     let videoSrc = "";
                     
                     if (match && match[1]) {
-                      videoSrc = `http://localhost:3001/meetings/video/${match[1]}`;
+                      videoSrc = `https://intellmeet-backend-vufa.onrender.com/meetings/video/${match[1]}`;
                     } else {
                       let cleanPath = rawUrl.replace(/^\/+/, ""); 
-                      videoSrc = cleanPath.startsWith("http") ? cleanPath : `http://localhost:3001/${cleanPath}`;
+                      videoSrc = cleanPath.startsWith("http") ? cleanPath : `https://intellmeet-backend-vufa.onrender.com/${cleanPath}`;
                     }
 
                     return (

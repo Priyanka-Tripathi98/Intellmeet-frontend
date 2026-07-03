@@ -15,7 +15,7 @@ function ForgotPassword() {
     try {
 
       const res = await axios.post(
-        "http://localhost:3001/forgot-password",
+        "https://intellmeet-backend-vufa.onrender.com/forgot-password",
         { email }
       );
 

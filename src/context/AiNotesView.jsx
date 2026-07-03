@@ -136,7 +136,7 @@ function AiNotesView() {
     const fetchNotes = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await fetch("http://localhost:3001/meetings/user-history", {
+        const response = await fetch("https://intellmeet-backend-vufa.onrender.com/meetings/user-history", {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,

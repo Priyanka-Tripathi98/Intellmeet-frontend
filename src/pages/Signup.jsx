@@ -20,7 +20,7 @@ function Signup() {
     e.preventDefault();
 
     try {
-      const res = await axios.post("http://localhost:3001/users/", form);
+      const res = await axios.post("https://intellmeet-backend-vufa.onrender.com/users/", form);
       alert("Signup successful!");
       navigate("/login"); // redirect after signup
     } catch (error) {
