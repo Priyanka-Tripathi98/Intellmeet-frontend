@@ -41,19 +41,26 @@ function Profile() {
     fetchProfile();
   }, [navigate]);
 
-  // ✅ Optimized Profile Patch Submission
+  // ✅ Cleaned up text update handling to match your backend structure perfectly
   const handleSave = async () => {
-    setLoading(true); // ✅ Fixed to true to start loading state
+    setLoading(true); 
     try {
       const token = localStorage.getItem("token");
+      
+      // Using FormData ensures it interfaces safely with your backend Multer middleware
+      const formData = new FormData();
+      formData.append("name", user.name);
+      formData.append("email", user.email);
+      formData.append("username", user.username || ""); // Pass username if it exists on user state
+
       const res = await axios.put(
         `${API_URL}/profile/update`,
+        formData,
         {
-          name: user.name,
-          email: user.email,
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { 
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data" 
+          },
         }
       );
 
@@ -66,10 +73,10 @@ function Profile() {
       console.error("Profile update patch submission error:", error);
       alert("Failed To Update Profile Settings ❌");
     } finally {
+      // Clean up local loading states
       setLoading(false);
     }
   };
-
   // ✅ Extracted Image String Resolver Logic
   const getAvatarSrc = () => {
     if (!user?.profilePic) return null;
