@@ -14,8 +14,8 @@ function EditProfile() {
 
   const navigate = useNavigate();
 
-  // Your Backend URL
-  const API_URL = "https://intellmeet-backend-vufa.onrender.com";
+  // ✅ Flexible Environment URL (avoids hardcoding)
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
 
   // ✅ Load existing profile
   useEffect(() => {
@@ -40,12 +40,14 @@ function EditProfile() {
         setEmail(user.email || "");
         setUsername(user.username || "");
 
-        // ✅ Ensure the path includes the backend URL correctly
+        // ✅ Cleans up any potential leading slashes to prevent broken URLs
         if (user.profilePic) {
-          const fullPath = user.profilePic.startsWith("http") 
-            ? user.profilePic 
-            : `${API_URL}/${user.profilePic}`;
-          setAvatar(fullPath);
+          if (user.profilePic.startsWith("http")) {
+            setAvatar(user.profilePic);
+          } else {
+            const cleanPath = user.profilePic.replace(/^\/+/, "");
+            setAvatar(`${API_URL}/${cleanPath}`);
+          }
         } else {
           setAvatar(DefaultProfile);
         }
@@ -56,9 +58,9 @@ function EditProfile() {
     };
 
     fetchProfile();
-  }, []);
+  }, [API_URL]);
 
-  // ✅ Image preview
+  // ✅ Image preview handler
   const handleImageChange = (e) => {
     const file = e.target.files[0];
 
@@ -67,13 +69,13 @@ function EditProfile() {
 
       const reader = new FileReader();
       reader.onload = () => {
-        setAvatar(reader.result); // preview data string becomes raw base64 data uri here
+        setAvatar(reader.result); 
       };
       reader.readAsDataURL(file);
     }
   };
 
-  // ✅ Update profile
+  // ✅ Update profile submission
   const handleUpdate = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -115,17 +117,21 @@ function EditProfile() {
     }
   };
 
-  // ✅ NEW INTERCEPTOR HELPER FUNCTION
-  // Prevents append modifications from poisoning raw text files or local assets
+  // ✅ BULLETPROOF IMAGE SOURCE RECOVERY
   const getAvatarSrc = () => {
     if (!avatar) return DefaultProfile;
     
-    // If it's a freshly loaded preview (base64 data), do NOT append a timestamp
-    if (avatar.startsWith("data:") || avatar.startsWith("blob:") || avatar.startsWith("static/")) {
+    // If it's a freshly loaded local preview (base64) or a Vite asset deployment path
+    if (
+      avatar.startsWith("data:") || 
+      avatar.startsWith("blob:") || 
+      avatar.startsWith("/assets/") || 
+      avatar.startsWith("static/")
+    ) {
       return avatar;
     }
 
-    // Only add cache-busting to live network web links
+    // Only add a cache-buster query if it's pointing to your external network API storage
     return `${avatar}${avatar.includes('?') ? '&' : '?'}t=${new Date().getTime()}`;
   };
 
@@ -137,9 +143,12 @@ function EditProfile() {
         <div className="ig-profile-header">
           <div className="ig-avatar">
             <img
-              /* ✅ FIX IMPLEMENTED HERE */
               src={getAvatarSrc()}
               alt="profile"
+              onError={(e) => {
+                // Instantly catches any leftover loading breaks and swaps in the default asset
+                e.target.src = DefaultProfile;
+              }}
             />
           </div>
 
