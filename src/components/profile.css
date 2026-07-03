@@ -1,0 +1,293 @@
+/* Main Wrapper */
+.profile-wrapper {
+  width: 100%;
+  min-height: 100vh;
+  background: radial-gradient(circle at 50% 50%, #0f1123 0%, #060816 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  font-family: "Poppins", sans-serif;
+}
+
+/* ONE MAIN BOX */
+.settings-layout {
+  width: 780px;
+  display: flex;
+  background: rgba(13, 18, 36, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), 
+              0 0 60px rgba(124, 58, 237, 0.08);
+}
+
+/* LEFT SIDEBAR */
+.settings-sidebar {
+  width: 220px;
+  padding: 35px 15px;
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(8, 11, 23, 0.5);
+}
+
+/* Sidebar Menu */
+.settings-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Base style for tabs - Updated to perfectly align items and handle inner spacing */
+.settings-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Pushes the right-arrow icon to the absolute end */
+  gap: 12px;
+  padding: 14px 18px;
+  border-radius: 12px;
+  background: transparent;
+  color: #e2e8f0 !important;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  box-sizing: border-box;
+}
+
+/* Helper container inside settings-item for icon + label pairing */
+.settings-item > div,
+.settings-item > span {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Unifies icon positions and alignment */
+.settings-item svg {
+  color: #a78bfa !important;
+  transition: color 0.3s ease;
+  flex-shrink: 0;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Identical Hover state */
+.settings-item:hover {
+  background: rgba(124, 58, 237, 0.15) !important;
+  color: white !important;
+}
+
+.settings-item:hover svg {
+  color: #c084fc !important;
+}
+
+/* Active state */
+.settings-item.active {
+  background: linear-gradient(135deg, #7c3aed, #4f46e5) !important;
+  color: white !important;
+  box-shadow: 0 8px 20px rgba(124, 58, 237, 0.25);
+}
+
+.settings-item.active svg {
+  color: white !important;
+}
+
+/* RIGHT SIDE */
+.profile-card {
+  flex: 1;
+  padding: 40px;
+  background: transparent;
+}
+
+/* Title */
+.profile-title {
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 30px;
+  color: white;
+  letter-spacing: -0.5px;
+}
+
+/* Header */
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 35px;
+  background: rgba(255, 255, 255, 0.02);
+  padding: 20px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+/* Avatar */
+.avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #7c3aed, #4f46e5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 28px;
+  font-weight: 600;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(124, 58, 237, 0.3);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Name and details container */
+.profile-header h2 {
+  font-size: 20px;
+  font-weight: 600;
+  color: white;
+}
+
+.profile-header p {
+  color: #64748b;
+  margin-top: 4px;
+  font-size: 14px;
+}
+
+/* Change Photo Button */
+.change-photo {
+  margin-top: 12px;
+  display: inline-block;
+}
+
+.change-photo a {
+  text-decoration: none;
+  color: #a78bfa;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 6px 14px;
+  border-radius: 8px;
+  background: rgba(124, 58, 237, 0.12);
+  border: 1px solid rgba(124, 58, 237, 0.2);
+  transition: all 0.2s ease;
+}
+
+.change-photo a:hover {
+  background: rgba(124, 58, 237, 0.25);
+  color: white;
+  border-color: rgba(124, 58, 237, 0.4);
+}
+
+/* Form */
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.info-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.info-group label {
+  color: #94a3b8;
+  font-size: 13px;
+  font-weight: 500;
+  margin-left: 2px;
+}
+
+.info-group input {
+  width: 100%;
+  background: rgba(11, 15, 30, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 14px 16px;
+  color: white;
+  outline: none;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.info-group input:focus {
+  border-color: #7c3aed;
+  background: rgba(11, 15, 30, 0.9);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+}
+
+/* Save Changes Button */
+.save-btn {
+  width: 100%;
+  margin-top: 30px;
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #7c3aed, #4f46e5);
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.2);
+}
+
+.save-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(124, 58, 237, 0.35);
+  filter: brightness(1.1);
+}
+
+.save-btn:active {
+  transform: translateY(1px);
+}
+
+/* Responsive */
+@media(max-width: 768px) {
+  .profile-wrapper {
+    padding: 16px;
+  }
+
+  .settings-layout {
+    flex-direction: column;
+    width: 100%;
+    border-radius: 20px;
+  }
+
+  .settings-sidebar {
+    width: 100%;
+    padding: 20px;
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .settings-menu {
+    flex-direction: row;
+    overflow-x: auto;
+    padding-bottom: 5px;
+  }
+
+  .settings-item {
+    padding: 10px 16px;
+    white-space: nowrap;
+  }
+
+  .profile-card {
+    padding: 24px;
+  }
+
+  .profile-title {
+    font-size: 22px;
+    margin-bottom: 20px;
+  }
+
+  .profile-header {
+    gap: 16px;
+    padding: 16px;
+  }
+}

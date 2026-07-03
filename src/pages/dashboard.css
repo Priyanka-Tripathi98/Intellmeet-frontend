@@ -1,0 +1,574 @@
+/* ==========================================================================
+   1. Theme Variables Config (Split Dark & Light)
+   ========================================================================== */
+
+.dashboard.dark-theme {
+  --bg-main: #0b0c10;          
+  --bg-sidebar: #11141a;       
+  --bg-card: #151a22;          
+  --text-main: #ffffff;        
+  --text-muted: #94a3b8;       
+  --border-color: #1e293b;     
+  --accent-color: #6366f1;     
+  --accent-hover: #4f46e5;
+}
+
+.dashboard.light-theme {
+  --bg-main: #f8fafc;          
+  --bg-sidebar: #ffffff;       
+  --bg-card: #ffffff;          
+  --text-main: #0f172a;        
+  --text-muted: #64748b;       
+  --border-color: #e2e8f0;     
+  --accent-color: #4f46e5;     
+  --accent-hover: #3730a3;
+}
+
+:root {
+  --bg-main: #0b0c10;
+  --bg-sidebar: #11141a;
+  --bg-card: #151a22;
+  --text-main: #ffffff;
+  --text-muted: #94a3b8;
+  --accent-color: #6366f1;
+  --accent-hover: #4f46e5;
+  --border-color: #1e293b;
+}
+
+/* ==========================================================================
+   2. Global Resets & Layout Container
+   ========================================================================== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.dashboard {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* ==========================================================================
+   3. Sidebar Panel & Hover Interactions
+   ========================================================================== */
+.sidebar {
+  width: 260px;
+  background-color: var(--bg-sidebar);
+  border-right: 1px solid var(--border-color);
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.sidebar-menu {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.sidebar-menu li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  color: var(--text-muted);
+  cursor: pointer;
+  list-style-type: none;
+  transition: all 0.2s ease;
+  margin-bottom: 8px;
+}
+
+.sidebar-icon {
+  display: inline-block;
+  min-width: 18px;
+  min-height: 18px;
+  stroke: var(--text-muted);
+  fill: none;
+  transition: stroke 0.2s ease;
+}
+
+.sidebar-menu li:hover {
+  background-color: rgba(99, 102, 241, 0.15); 
+  color: var(--accent-color);                  
+}
+
+.sidebar-menu li:hover .sidebar-icon {
+  stroke: var(--accent-color);                 
+}
+
+.sidebar-menu li.active {
+  background-color: rgba(99, 102, 241, 0.15); 
+  color: var(--accent-color);
+  font-weight: 600;
+}
+
+.sidebar-menu li.active .sidebar-icon {
+  stroke: var(--accent-color);
+}
+
+li span a, li a {
+  text-decoration: none !important;
+  color: inherit !important;
+}
+
+.logout-btn {
+  margin-top: auto;
+  background: transparent;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+  padding: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.logout-btn:hover {
+  background: rgba(239, 68, 68, 0.1);
+}
+
+/* ==========================================================================
+   4. Main Content Area & Navigation Topbar
+   ========================================================================== */
+.main {
+  flex: 1;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  overflow-y: auto;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 20px;
+}
+
+.topbar h2 {
+  color: var(--text-main);
+}
+
+.topbar p {
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+/* ==========================================================================
+   5. Metrics Summary Grid & Cards
+   ========================================================================== */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  padding: 24px;
+  border-radius: 14px;
+  transition: transform 0.2s, border-color 0.2s, background-color 0.3s ease;
+}
+
+.card:hover {
+  border-color: rgba(99, 102, 241, 0.3);
+  transform: translateY(-2px);
+}
+
+.card h3 {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.card p {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+/* ==========================================================================
+   6. Animated Theme Switch Slider Configuration
+   ========================================================================== */
+.theme-switch {
+  font-size: 17px;
+  position: relative;
+  display: inline-block;
+  width: 64px;
+  height: 34px;
+}
+
+.theme-switch .theme-input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.theme-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #183153; 
+  transition: .4s;
+  border-radius: 30px;
+  border: 1px solid var(--border-color);
+}
+
+.theme-slider:before {
+  position: absolute;
+  content: "";
+  height: 28px;
+  width: 28px;
+  border-radius: 50%;
+  left: 2px;
+  bottom: 2px;
+  z-index: 2;
+  background-color: #e8e8e8;
+  transition: .4s;
+}
+
+.sun svg {
+  position: absolute;
+  top: 5px;
+  left: 33px;
+  z-index: 1;
+  width: 22px;
+  height: 22px;
+  animation: rotate 15s linear infinite;
+}
+
+.moon svg {
+  fill: #73C0FC;
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  z-index: 1;
+  width: 22px;
+  height: 22px;
+  animation: tilt 5s linear infinite;
+}
+
+@keyframes rotate {
+  0% { transform: rotate(0); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes tilt {
+  0% { transform: rotate(0deg); }
+  25% { transform: rotate(-10deg); }
+  75% { transform: rotate(10deg); }
+  100% { transform: rotate(0deg); }
+}
+
+.theme-input:checked + .theme-slider {
+  background-color: #73C0FC; 
+}
+
+.theme-input:checked + .theme-slider:before {
+  transform: translateX(30px); 
+}
+
+/* ==========================================================================
+   7. Profile Sidebar Widget Styles
+   ========================================================================== */
+.profile-sidebar-item {
+  margin-top: auto; 
+  padding: 4px 0;
+}
+
+.profile-sidebar-item .dash-avatar-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  width: 100%;
+  color: var(--text-muted);
+  transition: color 0.2s ease;
+}
+
+.profile-sidebar-item:hover .dash-avatar-link {
+  color: var(--accent-color);
+}
+
+.dash-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6366f1, #a855f7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 1.5px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.2s ease;
+  flex-shrink: 0; 
+}
+
+.dash-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.dash-avatar-initial {
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.profile-sidebar-item:hover .dash-avatar {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 10px rgba(168, 85, 247, 0.4);
+  transform: scale(1.05);
+}
+
+/* ==========================================================================
+   8. Meeting Panels & Dynamic Routing
+   ========================================================================== */
+.meeting-sections {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.meeting-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+}
+
+.meeting-panel h2 {
+  font-size: 20px;
+  margin-bottom: 16px;
+  color: var(--text-main);
+}
+
+.meeting-item {
+  background: var(--bg-sidebar);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 14px;
+  margin-bottom: 12px;
+  transition: 0.2s;
+}
+
+.meeting-item:hover {
+  border-color: var(--accent-color);
+  transform: translateY(-2px);
+}
+
+.meeting-item h4 {
+  color: var(--text-main);
+  margin-bottom: 8px;
+}
+
+.meeting-item p {
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.meeting-code-badge {
+  display: inline-block;
+  background: rgba(99, 102, 241, 0.15);
+  color: var(--accent-color);
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.status-tag {
+  display: inline-block;
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 12px;
+  text-transform: capitalize;
+  font-weight: 500;
+}
+
+.status-tag.completed {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+}
+
+.schedule-trigger-btn {
+  background-color: transparent;
+  color: var(--accent-color);
+  border: 1px dashed var(--accent-color);
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  margin-top: auto;
+  transition: all 0.2s ease;
+}
+
+.schedule-trigger-btn:hover {
+  background-color: rgba(99, 102, 241, 0.08);
+  color: var(--accent-hover);
+  border-color: var(--accent-hover);
+}
+
+.meeting-box button {
+  background-color: var(--accent-color);
+  color: #ffffff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.meeting-box button:hover {
+  background-color: var(--accent-hover);
+}
+
+.empty-text {
+  color: var(--text-muted);
+  text-align: center;
+  padding: 20px;
+}
+
+@media (max-width: 900px) {
+  .meeting-sections {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==========================================================================
+   9. Schedule Modal Component
+   ========================================================================== */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(11, 12, 16, 0.6);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.schedule-modal {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  width: 100%;
+  max-width: 440px;
+  padding: 24px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h3 {
+  font-size: 18px;
+  color: var(--text-main);
+}
+
+.close-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.form-group input {
+  background: var(--bg-sidebar);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  padding: 10px 14px;
+  border-radius: 8px;
+  outline: none;
+}
+
+.form-group input:focus {
+  border-color: var(--accent-color);
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.cancel-btn {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.submit-btn {
+  background: var(--accent-color);
+  border: none;
+  color: white;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.submit-btn:hover {
+  background: var(--accent-hover);
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

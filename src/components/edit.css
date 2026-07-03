@@ -1,0 +1,218 @@
+/* Main Container Styling */
+.ig-edit-container {
+  width: 100%;
+  min-height: 100vh;
+  background: radial-gradient(circle at 50% 50%, #0f1123 0%, #060816 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+  font-family: "Poppins", sans-serif;
+}
+
+/* Central Card Box with Glassmorphism */
+.ig-edit-card {
+  background: rgba(13, 18, 36, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  width: 100%;
+  max-width: 650px;
+  padding: 40px;
+  border-radius: 24px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), 
+              0 0 60px rgba(124, 58, 237, 0.06);
+}
+
+/* Profile Header Section */
+.ig-profile-header {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 35px;
+  background: rgba(255, 255, 255, 0.02);
+  padding: 20px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+/* Avatar Wrapper matching the main view */
+.ig-avatar {
+  width: 70px;
+  height: 70px;
+  margin: 0; /* Reset Instagram-based left shift */
+  position: relative;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #7c3aed, #4f46e5);
+  padding: 2px;
+  box-shadow: 0 8px 24px rgba(124, 58, 237, 0.3);
+}
+
+.ig-avatar img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #0d1224;
+}
+
+/* User Info Layout */
+.ig-avatar-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ig-username-display {
+  font-size: 20px;
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: -0.3px;
+}
+
+.change-photo-btn {
+  background: rgba(124, 58, 237, 0.12);
+  border: 1px solid rgba(124, 58, 237, 0.2);
+  color: #a78bfa;
+  font-weight: 500;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 6px 14px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  width: fit-content;
+}
+
+.change-photo-btn:hover {
+  background: rgba(124, 58, 237, 0.25);
+  color: #ffffff;
+  border-color: rgba(124, 58, 237, 0.4);
+}
+
+/* Input Fields & Layout Structure */
+.ig-form {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.ig-input-row {
+  display: flex;
+  flex-direction: column; /* Better readability stacking labels above fields */
+  gap: 8px;
+}
+
+.ig-input-row label {
+  color: #94a3b8;
+  font-size: 13px;
+  font-weight: 500;
+  margin-left: 2px;
+  text-align: left;
+}
+
+.ig-input-field {
+  width: 100%;
+}
+
+.ig-input-field input {
+  width: 100%;
+  background: rgba(11, 15, 30, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 14px 16px;
+  font-size: 14px;
+  color: #ffffff;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.ig-input-field input:focus {
+  border-color: #7c3aed;
+  background: rgba(11, 15, 30, 0.9);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+}
+
+/* Bottom Actions & Buttons */
+.ig-form-footer {
+  margin-top: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end; /* Push actions neatly to the bottom-right corner */
+  gap: 16px;
+}
+
+.ig-submit-btn {
+  background: linear-gradient(135deg, #7c3aed, #4f46e5);
+  border: none;
+  color: white;
+  padding: 12px 28px;
+  font-weight: 600;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 14px;
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.2);
+  transition: all 0.2s ease;
+}
+
+.ig-submit-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(124, 58, 237, 0.35);
+  filter: brightness(1.1);
+}
+
+.ig-submit-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.ig-cancel-link {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #cbd5e1;
+  padding: 12px 24px;
+  font-weight: 500;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.ig-cancel-link:hover {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.2);
+  color: #f87171;
+}
+
+/* Mobile Responsiveness Improvements */
+@media (max-width: 500px) {
+  .ig-edit-container {
+    padding: 16px;
+  }
+  
+  .ig-edit-card {
+    padding: 24px 20px;
+    border-radius: 20px;
+  }
+
+  .ig-profile-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 16px;
+  }
+
+  .ig-avatar-info {
+    align-items: center;
+  }
+
+  .ig-form-footer {
+    flex-direction: column-reverse; /* Puts Save button on top of Cancel for mobile taps */
+    width: 100%;
+  }
+
+  .ig-submit-btn,
+  .ig-cancel-link {
+    width: 100%;
+    text-align: center;
+  }
+}
