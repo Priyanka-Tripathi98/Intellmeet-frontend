@@ -15,7 +15,7 @@ function EditProfile() {
   const navigate = useNavigate();
 
   // ✅ Flexible Environment URL (avoids hardcoding)
-  const API_URL = import.meta.env.VITE_API_URL || "https://intellmeet-backend-vufa.onrender.com";
+  const API_URL = "https://intellmeet-backend-vufa.onrender.com";
 
   // ✅ Load existing profile
   useEffect(() => {
