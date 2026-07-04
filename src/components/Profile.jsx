@@ -76,20 +76,23 @@ function Profile() {
     }
   };
 
-  const getAvatarSrc = () => {
+ const getAvatarSrc = () => {
     if (!user?.profilePic) return null;
     
-    if (user.profilePic.startsWith("http")) {
+    
+    if (user.profilePic.startsWith("http") && !user.profilePic.includes("localhost")) {
       return `${user.profilePic}?t=${new Date().getTime()}`;
     }
 
-    const cleanPath = user.profilePic.startsWith("uploads/")
-      ? user.profilePic
-      : `uploads/${user.profilePic}`;
+    let cleanPath = user.profilePic;
+    if (cleanPath.includes("uploads/")) {
+      cleanPath = "uploads/" + cleanPath.split("uploads/")[1];
+    } else if (!cleanPath.startsWith("uploads/")) {
+      cleanPath = `uploads/${cleanPath}`;
+    }
 
     return `${API_URL}/${cleanPath}?t=${new Date().getTime()}`;
   };
-
   return (
     <div className="profile-wrapper">
       <div className="settings-layout">
