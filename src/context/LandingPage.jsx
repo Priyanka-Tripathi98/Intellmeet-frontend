@@ -1,12 +1,23 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../context/Navbar";
 import Features from "../context/Features";
 import HowItWorks from "../context/HowItWorks";
 import Pricing from "../context/Pricing";
 import About from "../context/About";
-import Footer from "../context/Footer"
+import Footer from "../context/Footer";
 
 export default function LandingPage() {
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const isMobile = windowWidth < 768;
+  const isTablet = windowWidth >= 768 && windowWidth < 1024;
+
   return (
     <div
       style={{
@@ -20,40 +31,14 @@ export default function LandingPage() {
     >
       <Navbar />
 
-      {/* LEFT GLOW */}
-      <div
-        style={{
-          position: "absolute",
-          top: "10%",
-          left: "-10%",
-          width: "500px",
-          height: "500px",
-          background:
-            "radial-gradient(circle, rgba(124,58,237,0.28) 0%, transparent 70%)",
-          filter: "blur(90px)",
-          zIndex: 0,
-        }}
-      />
+      {/* BACKGROUND GLOWS */}
+      <div style={{ position: "absolute", top: "10%", left: "-10%", width: isMobile ? "250px" : "500px", height: isMobile ? "250px" : "500px", background: "radial-gradient(circle, rgba(124,58,237,0.28) 0%, transparent 70%)", filter: "blur(90px)", zIndex: 0 }} />
+      <div style={{ position: "absolute", bottom: "0%", right: "-10%", width: isMobile ? "250px" : "500px", height: isMobile ? "250px" : "500px", background: "radial-gradient(circle, rgba(99,102,241,0.22) 0%, transparent 70%)", filter: "blur(100px)", zIndex: 0 }} />
 
-      {/* RIGHT GLOW */}
-      <div
-        style={{
-          position: "absolute",
-          bottom: "0%",
-          right: "-10%",
-          width: "500px",
-          height: "500px",
-          background:
-            "radial-gradient(circle, rgba(99,102,241,0.22) 0%, transparent 70%)",
-          filter: "blur(100px)",
-          zIndex: 0,
-        }}
-      />
-
-      {/* HERO */}
+      {/* HERO CONTAINER */}
       <main
         style={{
-          padding: "130px 5% 100px",
+          padding: isMobile ? "100px 16px 60px" : "130px 5% 100px",
           position: "relative",
           zIndex: 1,
         }}
@@ -63,30 +48,20 @@ export default function LandingPage() {
           style={{
             maxWidth: "1450px",
             margin: "0 auto",
-            borderRadius: "34px",
+            borderRadius: isMobile ? "20px" : "34px",
             overflow: "hidden",
             border: "1px solid rgba(255,255,255,0.06)",
             background: "rgba(9,12,26,0.95)",
             backdropFilter: "blur(20px)",
             boxShadow: "0 30px 80px rgba(0,0,0,0.6)",
-            padding: "28px",
+            padding: isMobile ? "16px" : "28px",
             position: "relative",
           }}
         >
           {/* CENTER PURPLE GLOW */}
-          <div
-            style={{
-              position: "absolute",
-              width: "450px",
-              height: "450px",
-              background: "#7c3aed",
-              filter: "blur(130px)",
-              opacity: "0.25",
-              bottom: "-180px",
-              left: "35%",
-              zIndex: 0,
-            }}
-          />
+          {!isMobile && (
+            <div style={{ position: "absolute", width: "450px", height: "450px", background: "#7c3aed", filter: "blur(130px)", opacity: "0.25", bottom: "-180px", left: "35%", zIndex: 0 }} />
+          )}
 
           <div
             style={{
@@ -94,15 +69,14 @@ export default function LandingPage() {
               gap: "22px",
               position: "relative",
               zIndex: 1,
-              flexWrap: "wrap",
+              flexDirection: (isMobile || isTablet) ? "column" : "row",
             }}
           >
             {/* LEFT SIDE */}
             <div
               style={{
                 flex: "1.1",
-                minWidth: "320px",
-                padding: "30px 15px",
+                padding: isMobile ? "10px 5px" : "30px 15px",
               }}
             >
               {/* BADGE */}
@@ -117,7 +91,7 @@ export default function LandingPage() {
                   border: "1px solid rgba(124,58,237,0.25)",
                   color: "#d8b4fe",
                   fontSize: "13px",
-                  marginBottom: "35px",
+                  marginBottom: isMobile ? "20px" : "35px",
                 }}
               >
                 ✨ AI Powered Meetings
@@ -126,24 +100,16 @@ export default function LandingPage() {
               {/* HEADING */}
               <h1
                 style={{
-                  fontSize: "72px",
-                  lineHeight: "1.05",
+                  fontSize: isMobile ? "36px" : isTablet ? "54px" : "72px",
+                  lineHeight: "1.1",
                   fontWeight: "800",
                   marginBottom: "22px",
-                  letterSpacing: "-2px",
+                  letterSpacing: isMobile ? "-1px" : "-2px",
                 }}
               >
                 Smart Meetings.
                 <br />
-
-                <span
-                  style={{
-                    background:
-                      "linear-gradient(135deg,#c084fc,#6366f1)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                  }}
-                >
+                <span style={{ background: "linear-gradient(135deg,#c084fc,#6366f1)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
                   Better Decisions.
                 </span>
               </h1>
@@ -152,147 +118,75 @@ export default function LandingPage() {
               <p
                 style={{
                   color: "#94a3b8",
-                  lineHeight: "1.8",
+                  lineHeight: "1.7",
                   maxWidth: "580px",
-                  marginBottom: "38px",
-                  fontSize: "17px",
+                  marginBottom: "34px",
+                  fontSize: isMobile ? "15px" : "17px",
                 }}
               >
-                IntellMeet brings your team together with AI
-                summaries, real-time collaboration, HD video
-                meetings, and seamless productivity tools.
+                IntellMeet brings your team together with AI summaries, real-time collaboration, HD video meetings, and seamless productivity tools.
               </p>
 
               {/* BUTTONS */}
               <div
                 style={{
                   display: "flex",
-                  gap: "18px",
+                  gap: "14px",
                   flexWrap: "wrap",
                   marginBottom: "38px",
                 }}
               >
-                <button
-                  style={{
-                    background:
-                      "linear-gradient(135deg,#7c3aed,#6366f1)",
-                    border: "none",
-                    padding: "16px 32px",
-                    borderRadius: "14px",
-                    color: "white",
-                    fontWeight: "600",
-                    cursor: "pointer",
-                    fontSize: "15px",
-                    boxShadow:
-                      "0 10px 30px rgba(124,58,237,0.35)",
-                  }}
-                >
+                <button style={{ background: "linear-gradient(135deg,#7c3aed,#6366f1)", border: "none", padding: "16px 28px", borderRadius: "14px", color: "white", fontWeight: "600", cursor: "pointer", fontSize: "15px", flex: isMobile ? "1" : "none", minWidth: isMobile ? "100%" : "auto", boxShadow: "0 10px 30px rgba(124,58,237,0.35)" }}>
                   Get Started Free
                 </button>
-
-                <button
-                  style={{
-                    background: "transparent",
-                    border:
-                      "1px solid rgba(255,255,255,0.12)",
-                    padding: "16px 32px",
-                    borderRadius: "14px",
-                    color: "white",
-                    fontWeight: "500",
-                    cursor: "pointer",
-                    fontSize: "15px",
-                  }}
-                >
+                <button style={{ background: "transparent", border: "1px solid rgba(255,255,255,0.12)", padding: "16px 28px", borderRadius: "14px", color: "white", fontWeight: "500", cursor: "pointer", fontSize: "15px", flex: isMobile ? "1" : "none", minWidth: isMobile ? "100%" : "auto" }}>
                   ▶ Watch Demo
                 </button>
               </div>
 
-              {/* FEATURES */}
+              {/* REUSABLE MINIMAL BADGES */}
               <div
                 style={{
                   display: "flex",
-                  gap: "16px",
+                  gap: "12px",
                   flexWrap: "wrap",
                   color: "#94a3b8",
-                  fontSize: "14px",
+                  fontSize: "13px",
                 }}
               >
-                <span>🎥 HD Video Calls</span>
+                <span>🎥 HD Video</span>
                 <span>🤖 AI Summaries</span>
-                <span>💬 Real-time Chat</span>
-                <span>🖥️ Screen Sharing</span>
+                <span>💬 Chat</span>
+                <span>🖥️ Screen Share</span>
               </div>
             </div>
 
-            {/* CENTER VIDEO UI */}
+            {/* RIGHT SIDE (VIDEO MOCKUP) */}
             <div
               style={{
                 flex: "1",
-                minWidth: "350px",
                 background: "#0b1120",
                 borderRadius: "26px",
-                padding: "20px",
+                padding: isMobile ? "12px" : "20px",
                 border: "1px solid rgba(255,255,255,0.06)",
+                marginTop: isMobile ? "20px" : "0",
               }}
             >
               {/* TOP BAR */}
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  marginBottom: "18px",
-                }}
-              >
-                <div
-                  style={{
-                    display: "flex",
-                    gap: "8px",
-                  }}
-                >
-                  <div
-                    style={{
-                      width: "10px",
-                      height: "10px",
-                      borderRadius: "50%",
-                      background: "#ef4444",
-                    }}
-                  />
-
-                  <div
-                    style={{
-                      width: "10px",
-                      height: "10px",
-                      borderRadius: "50%",
-                      background: "#facc15",
-                    }}
-                  />
-
-                  <div
-                    style={{
-                      width: "10px",
-                      height: "10px",
-                      borderRadius: "50%",
-                      background: "#22c55e",
-                    }}
-                  />
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "18px" }}>
+                <div style={{ display: "flex", gap: "6px" }}>
+                  <div style={{ width: "8px", height: "8px", borderRadius: "50%", background: "#ef4444" }} />
+                  <div style={{ width: "8px", height: "8px", borderRadius: "50%", background: "#facc15" }} />
+                  <div style={{ width: "8px", height: "8px", borderRadius: "50%", background: "#22c55e" }} />
                 </div>
-
-                <p
-                  style={{
-                    color: "#94a3b8",
-                    fontSize: "14px",
-                  }}
-                >
-                  Weekly Team Meeting
-                </p>
+                <p style={{ color: "#94a3b8", fontSize: "13px", margin: 0 }}>Weekly Team Meeting</p>
               </div>
 
               {/* VIDEO GRID */}
               <div
                 style={{
                   display: "grid",
-                  gridTemplateColumns: "1fr 1fr",
+                  gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
                   gap: "12px",
                 }}
               >
@@ -302,36 +196,9 @@ export default function LandingPage() {
                   "https://randomuser.me/api/portraits/women/68.jpg",
                   "https://randomuser.me/api/portraits/men/75.jpg",
                 ].map((img, i) => (
-                  <div
-                    key={i}
-                    style={{
-                      position: "relative",
-                      overflow: "hidden",
-                      borderRadius: "18px",
-                      height: "180px",
-                    }}
-                  >
-                    <img
-                      src={img}
-                      alt="user"
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "cover",
-                      }}
-                    />
-
-                    <div
-                      style={{
-                        position: "absolute",
-                        bottom: "10px",
-                        left: "10px",
-                        background: "rgba(0,0,0,0.45)",
-                        padding: "6px 10px",
-                        borderRadius: "8px",
-                        fontSize: "12px",
-                      }}
-                    >
+                  <div key={i} style={{ position: "relative", overflow: "hidden", borderRadius: "18px", height: isMobile ? "140px" : "160px" }}>
+                    <img src={img} alt="user" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                    <div style={{ position: "absolute", bottom: "10px", left: "10px", background: "rgba(0,0,0,0.45)", padding: "4px 8px", borderRadius: "6px", fontSize: "11px" }}>
                       Participant
                     </div>
                   </div>
@@ -339,46 +206,35 @@ export default function LandingPage() {
               </div>
 
               {/* CONTROLS */}
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  gap: "16px",
-                  marginTop: "24px",
-                }}
-              >
-                {["🎤", "📹", "💬", "📞"].map(
-                  (icon, index) => (
-                    <button
-                      key={index}
-                      style={{
-                        width: "54px",
-                        height: "54px",
-                        borderRadius: "50%",
-                        border: "none",
-                        background:
-                          icon === "📞"
-                            ? "#ef4444"
-                            : "rgba(255,255,255,0.08)",
-                        color: "white",
-                        fontSize: "20px",
-                        cursor: "pointer",
-                      }}
-                    >
-                      {icon}
-                    </button>
-                  )
-                )}
+              <div style={{ display: "flex", justifyContent: "center", gap: isMobile ? "10px" : "16px", marginTop: "24px" }}>
+                {["🎤", "📹", "💬", "📞"].map((icon, index) => (
+                  <button
+                    key={index}
+                    style={{
+                      width: isMobile ? "46px" : "54px",
+                      height: isMobile ? "46px" : "54px",
+                      borderRadius: "50%",
+                      border: "none",
+                      background: icon === "📞" ? "#ef4444" : "rgba(255,255,255,0.08)",
+                      color: "white",
+                      fontSize: isMobile ? "16px" : "20px",
+                      cursor: "pointer",
+                    }}
+                  >
+                    {icon}
+                  </button>
+                ))}
               </div>
             </div>
           </div>
         </div>
       </main>
+
       <Features />
       <HowItWorks />
       <Pricing />
       <About />
-      <Footer/>
+      <Footer />
     </div>
   );
 }
