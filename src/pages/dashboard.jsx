@@ -35,6 +35,24 @@ export function Dashboard() {
   });
   const navigate = useNavigate();
 
+  // ✅ Fixed Avatar Path Sanitizer
+  const getAvatarSrc = () => {
+    if (!userProfile?.profilePic) return null;
+    
+    if (userProfile.profilePic.startsWith("http") && !userProfile.profilePic.includes("localhost")) {
+      return `${userProfile.profilePic}?t=${new Date().getTime()}`;
+    }
+
+    let cleanPath = userProfile.profilePic;
+    if (cleanPath.includes("uploads/")) {
+      cleanPath = "uploads/" + cleanPath.split("uploads/")[1];
+    } else if (!cleanPath.startsWith("uploads/")) {
+      cleanPath = `uploads/${cleanPath}`;
+    }
+
+    return `${API_URL}/${cleanPath}?t=${new Date().getTime()}`;
+  };
+
   const handleThemeChange = () => {
     const newTheme = theme === "dark" ? "light" : "dark";
     setTheme(newTheme);
@@ -234,29 +252,25 @@ export function Dashboard() {
   
   const currentTimestamp = Date.now();
 
- // Unified Filtering for Upcoming Meetings
   const upcomingMeetings = meetings.filter((meeting) => {
     const status = meeting.status?.toLowerCase();
     if (status === "completed" || status === "ended") return false;
-    if (status === "active") return true; // Force ongoing active meetings to show up here
+    if (status === "active") return true;
 
     const meetingTime = getMeetingTime(meeting);
     return meetingTime > currentTimestamp;
   });
 
-  // Unified Filtering for Recent / Past Meetings
   const recentMeetings = meetings.filter((meeting) => {
     const status = meeting.status?.toLowerCase();
     
-    // Explicit inclusion if it is marked finished
     if (status === "completed" || status === "ended") return true;
-    
-    // Explicit exclusion if it is still open/scheduled or active
     if (status === "scheduled" || status === "active") return false;
 
     const meetingTime = getMeetingTime(meeting);
     return meetingTime > 0 && meetingTime <= currentTimestamp;
   });
+
   const renderMainContent = () => {
     switch (activeMenu) {
       case "dashboard":
@@ -359,14 +373,7 @@ export function Dashboard() {
             <Link to="/dashboard/profile" className="dash-avatar-link">
               <div className="dash-avatar">
                 {userProfile?.profilePic ? (
-                  <img
-                    src={
-                      userProfile.profilePic.startsWith("http")
-                        ? `${userProfile.profilePic}?t=${new Date().getTime()}`
-                        : `${API_URL}/${userProfile.profilePic}?t=${new Date().getTime()}`
-                    }
-                    alt="User Profile"
-                  />
+                  <img src={getAvatarSrc()} alt="User Profile" />
                 ) : (
                   <span className="dash-avatar-initial">
                     {username ? username.charAt(0).toUpperCase() : "U"}
