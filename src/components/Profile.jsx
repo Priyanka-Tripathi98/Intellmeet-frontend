@@ -8,19 +8,20 @@ function Profile() {
   const [user, setUser] = useState({
     name: "",
     email: "",
+    username: "", // Added to map perfectly with your handleSave payload
     profilePic: ""
   });
   const [loading, setLoading] = useState(false);
 
   const API_URL = "https://intellmeet-backend-vufa.onrender.com";
   const navigate = useNavigate();
-  const location = useLocation(); // Used to accurately highlight active sidebar states
+  const location = useLocation();
 
   // ✅ Fetch Profile Data safely on Mount
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("userToken") || localStorage.getItem("token");
         if (!token) {
           alert("Session expired. Please login again.");
           return navigate("/login");
@@ -45,13 +46,11 @@ function Profile() {
   const handleSave = async () => {
     setLoading(true); 
     try {
-      const token = localStorage.getItem("token");
-      
-      // Using FormData ensures it interfaces safely with your backend Multer middleware
+      const token = localStorage.getItem("userToken") || localStorage.getItem("token");      
       const formData = new FormData();
       formData.append("name", user.name);
       formData.append("email", user.email);
-      formData.append("username", user.username || ""); // Pass username if it exists on user state
+      formData.append("username", user.username || ""); 
 
       const res = await axios.put(
         `${API_URL}/profile/update`,
@@ -73,19 +72,22 @@ function Profile() {
       console.error("Profile update patch submission error:", error);
       alert("Failed To Update Profile Settings ❌");
     } finally {
-      // Clean up local loading states
       setLoading(false);
     }
   };
-  // ✅ Extracted Image String Resolver Logic
+
   const getAvatarSrc = () => {
     if (!user?.profilePic) return null;
     
-    const baseUri = user.profilePic.startsWith("http")
-      ? user.profilePic
-      : `${API_URL}/${user.profilePic}`;
+    if (user.profilePic.startsWith("http")) {
+      return `${user.profilePic}?t=${new Date().getTime()}`;
+    }
 
-    return `${baseUri}?t=${new Date().getTime()}`;
+    const cleanPath = user.profilePic.startsWith("uploads/")
+      ? user.profilePic
+      : `uploads/${user.profilePic}`;
+
+    return `${API_URL}/${cleanPath}?t=${new Date().getTime()}`;
   };
 
   return (
@@ -99,7 +101,6 @@ function Profile() {
           </div>
           <div className="settings-menu">
             
-            {/* Profile Row Button */}
             <button 
               onClick={() => navigate("/dashboard/profile")}
               className={`settings-item ${location.pathname === "/dashboard/profile" ? "active" : ""}`}
@@ -111,7 +112,6 @@ function Profile() {
               <ChevronRight className="sidebar-arrow" size={16} />
             </button>
 
-            {/* Security Row Link Button */}
             <button 
               onClick={() => navigate("/dashboard/profile/change-password")}
               className={`settings-item ${location.pathname.includes("change-password") ? "active" : ""}`}
@@ -125,13 +125,11 @@ function Profile() {
 
           </div>
         </div>
-        {/* ================================================== */}
 
-        {/* Right Hand Settings Customization panel card wrapper */}
+        {/* ================= CONTENT SECTION ================= */}
         <div className="profile-card">
           <h1 className="profile-title">Profile</h1>
 
-          {/* User Account Sub-Header Details Grid Block */}
           <div className="profile-header">
             <div className="avatar">
               {user?.profilePic ? (
@@ -152,7 +150,6 @@ function Profile() {
             </div>
           </div>
 
-          {/* Interactive Core Payload Text Input Form Fields */}
           <div className="profile-info">
             <div className="info-group">
               <label>Full Name</label>
@@ -161,6 +158,16 @@ function Profile() {
                 value={user?.name || ""}
                 onChange={(e) => setUser(prev => ({ ...prev, name: e.target.value }))}
                 placeholder="Enter your full name"
+              />
+            </div>
+
+            <div className="info-group">
+              <label>Username</label>
+              <input
+                type="text"
+                value={user?.username || ""}
+                onChange={(e) => setUser(prev => ({ ...prev, username: e.target.value }))}
+                placeholder="Enter username"
               />
             </div>
 
@@ -175,7 +182,6 @@ function Profile() {
             </div>
           </div>
 
-          {/* Persistent Save Operation Execution CTA */}
           <button 
             className="save-btn" 
             onClick={handleSave}
