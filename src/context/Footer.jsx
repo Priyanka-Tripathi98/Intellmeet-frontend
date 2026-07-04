@@ -1,17 +1,31 @@
-import React from "react";
-import {
-  Video,
-  FileText,
-  Mic
-} from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { Video, FileText, Mic } from "lucide-react";
 
 export default function Footer() {
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const isMobile = windowWidth < 640;
+  const isTablet = windowWidth >= 640 && windowWidth < 1024;
+
+  // Determine grid layout dynamically based on screen size
+  const getGridTemplateColumns = () => {
+    if (isMobile) return "1fr";
+    if (isTablet) return "1fr 1fr";
+    return "1.4fr 1fr 1fr 1fr 1.5fr"; // Desktop layout
+  };
+
   return (
     <footer
       style={{
         background: "#050816",
         color: "#fff",
-        padding: "80px 7%",
+        padding: isMobile ? "60px 20px" : "80px 7%",
         borderTop: "1px solid rgba(255,255,255,0.08)",
       }}
     >
@@ -19,8 +33,8 @@ export default function Footer() {
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "1.4fr 1fr 1fr 1fr 1.5fr",
-          gap: "50px",
+          gridTemplateColumns: getGridTemplateColumns(),
+          gap: isMobile ? "40px" : "50px",
           paddingBottom: "60px",
           borderBottom: "1px solid rgba(255,255,255,0.08)",
         }}
@@ -49,12 +63,7 @@ export default function Footer() {
               <Video size={22} color="#fff" />
             </div>
 
-            <h2
-              style={{
-                fontSize: "20px",
-                fontWeight: "700",
-              }}
-            >
+            <h2 style={{ fontSize: "20px", fontWeight: "700", margin: 0 }}>
               IntellMeet
             </h2>
           </div>
@@ -67,8 +76,8 @@ export default function Footer() {
               marginBottom: "35px",
             }}
           >
-            AI-powered meetings that help teams collaborate smarter,
-            save time, and achieve more.
+            AI-powered meetings that help teams collaborate smarter, save time,
+            and achieve more.
           </p>
 
           {/* Features */}
@@ -104,8 +113,7 @@ export default function Footer() {
 
         {/* Product */}
         <div>
-          <h2 style={{marginBottom:"30px"}}>Product</h2>
-
+          <h2 style={headingStyle}>Product</h2>
           <div style={linkContainer}>
             <a href="#" style={linkStyle}>Features</a>
             <a href="#" style={linkStyle}>How it Works</a>
@@ -118,8 +126,7 @@ export default function Footer() {
 
         {/* Company */}
         <div>
-          <h2 style={{marginBottom:"30px"}}>Company</h2>
-
+          <h2 style={headingStyle}>Company</h2>
           <div style={linkContainer}>
             <a href="#" style={linkStyle}>About Us</a>
             <a href="#" style={linkStyle}>Blog</a>
@@ -131,8 +138,7 @@ export default function Footer() {
 
         {/* Resources */}
         <div>
-          <h2 style={{marginBottom:"30px"}}>Resources</h2>
-
+          <h2 style={headingStyle}>Resources</h2>
           <div style={linkContainer}>
             <a href="#" style={linkStyle}>Help Center</a>
             <a href="#" style={linkStyle}>Guides</a>
@@ -144,7 +150,9 @@ export default function Footer() {
 
         {/* Newsletter */}
         <div>
-          <h2 style={{marginBottom:"20px"}}>Stay in the loop</h2>
+          <h2 style={{ fontSize: "22px", fontWeight: "600", marginBottom: "20px", marginTop: 0 }}>
+            Stay in the loop
+          </h2>
 
           <p
             style={{
@@ -159,6 +167,7 @@ export default function Footer() {
           <div
             style={{
               display: "flex",
+              flexDirection: isMobile ? "column" : "row",
               gap: "14px",
               marginBottom: "40px",
             }}
@@ -175,6 +184,8 @@ export default function Footer() {
                 color: "#fff",
                 outline: "none",
                 fontSize: "15px",
+                width: isMobile ? "100%" : "auto",
+                boxSizing: "border-box",
               }}
             />
 
@@ -186,65 +197,61 @@ export default function Footer() {
                 cursor: "pointer",
                 fontWeight: "600",
                 color: "#fff",
-                background:
-                  "linear-gradient(135deg,#c084fc,#8b5cf6)",
+                background: "linear-gradient(135deg,#c084fc,#8b5cf6)",
+                width: isMobile ? "100%" : "auto",
               }}
             >
               Subscribe
             </button>
           </div>
-
         </div>
       </div>
 
-      {/* Bottom */}
+      {/* Bottom Subfooter */}
       <div
         style={{
           paddingTop: "35px",
           display: "flex",
+          flexDirection: isMobile ? "column-reverse" : "row",
           justifyContent: "space-between",
-          alignItems: "center",
-          flexWrap: "wrap",
-          gap: "20px",
+          alignItems: isMobile ? "flex-start" : "center",
+          gap: "24px",
         }}
       >
         <p
           style={{
             color: "#94a3b8",
             fontSize: "15px",
+            margin: 0,
+            lineHeight: "1.6",
           }}
         >
-          © 2026 IntellMeet.<br/> All rights reserved.
+          © 2026 IntellMeet. All rights reserved. <br />
           made with care.
         </p>
 
         <div
           style={{
             display: "flex",
-            gap: "30px",
+            flexDirection: isMobile ? "column" : "row",
+            gap: isMobile ? "14px" : "30px",
           }}
         >
-          <a href="#" style={bottomLink}>
-            Privacy Policy
-          </a>
-
-          <a href="#" style={bottomLink}>
-            Terms of Service
-          </a>
-
-          <a href="#" style={bottomLink}>
-            Cookies Settings
-          </a>
+          <a href="#" style={bottomLink}>Privacy Policy</a>
+          <a href="#" style={bottomLink}>Terms of Service</a>
+          <a href="#" style={bottomLink}>Cookies Settings</a>
         </div>
       </div>
     </footer>
   );
 }
 
+// Inline constant styles
 const headingStyle = {
-  fontSize: "28px",
+  fontSize: "22px",
   fontWeight: "600",
   marginBottom: "30px",
+  marginTop: 0,
 };
 
 const linkContainer = {
@@ -282,4 +289,5 @@ const iconStyle = {
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
+  flexShrink: 0,
 };
