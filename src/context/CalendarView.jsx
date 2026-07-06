@@ -4,14 +4,16 @@ import { ChevronLeft, ChevronRight, Calendar as CalendarIcon, Clock, Video } fro
 // Centralized Premium Dark-Theme Inline Styles Config
 const styles = {
   container: {
-    padding: "24px",
+    padding: "clamp(12px, 4vw, 24px)", // Fluid outer layout padding
     display: "flex",
     flexDirection: "column",
     gap: "24px",
     color: "#ffffff",
+    maxWidth: "1200px",
+    margin: "0 auto",
   },
   headerTitle: {
-    fontSize: "24px",
+    fontSize: "clamp(20px, 5vw, 24px)", // Fluid heading text
     fontWeight: "600",
     letterSpacing: "-0.02em",
     margin: 0,
@@ -22,18 +24,12 @@ const styles = {
     marginTop: "4px",
     marginBottom: 0,
   },
-  layoutGrid: {
-    display: "grid",
-    gridTemplateColumns: "1.5fr 1fr",
-    gap: "24px",
-    alignItems: "start",
-  },
   // Calendar Card Section
   calendarCard: {
     background: "rgba(15, 23, 42, 0.2)",
     border: "1px solid #334155",
     borderRadius: "16px",
-    padding: "20px",
+    padding: "clamp(12px, 3vw, 20px)", // Dynamic interior padding
   },
   calendarHeader: {
     display: "flex",
@@ -56,7 +52,7 @@ const styles = {
     border: "1px solid #334155",
     color: "#94a3b8",
     borderRadius: "8px",
-    padding: "6px",
+    padding: "8px", // Enlarged slightly for target accuracy on touchscreens
     cursor: "pointer",
     display: "flex",
     alignItems: "center",
@@ -230,7 +226,6 @@ function CalendarView() {
   const handlePrevMonth = () => setCurrentDate(new Date(year, month - 1, 1));
   const handleNextMonth = () => setCurrentDate(new Date(year, month + 1, 1));
 
-  // FIXED: Strict calendar data comparison helper logic
   const getMeetingsForDate = (dateObj) => {
     if (!dateObj) return [];
     return meetings.filter(m => {
@@ -247,16 +242,40 @@ function CalendarView() {
 
   return (
     <div style={styles.container}>
+      {/* Inline style sheet to safely configure multi-column grid scaling */}
+      <style>{`
+        .responsive-dashboard-grid {
+          display: grid;
+          grid-template-columns: 1.5fr 1fr;
+          gap: 24px;
+          align-items: start;
+        }
+        @media (max-width: 900px) {
+          .responsive-dashboard-grid {
+            grid-template-columns: 1fr;
+            gap: 20px;
+          }
+        }
+        @media (max-width: 440px) {
+          .responsive-weekdays-row {
+            font-size: 10px !important;
+          }
+          .responsive-days-matrix {
+            gap: 4px !important;
+          }
+        }
+      `}</style>
+
       {/* View Header */}
       <div>
         <h2 style={styles.headerTitle}>Workspace Calendar</h2>
         <p style={styles.headerSub}>Manage schedules and track upcoming video synchronization timelines.</p>
       </div>
 
-      {/* Two-Column Board Layout */}
-      <div style={styles.layoutGrid}>
+      {/* Two-Column Responsive Grid Layout */}
+      <div className="responsive-dashboard-grid">
         
-        {/* Main Grid Block */}
+        {/* Main Calendar Card Block */}
         <div style={styles.calendarCard}>
           <div style={styles.calendarHeader}>
             <h3 style={styles.monthTitle}>
@@ -273,12 +292,12 @@ function CalendarView() {
           </div>
 
           {/* Days of Week String Header Row */}
-          <div style={styles.weekDaysGrid}>
+          <div className="responsive-weekdays-row" style={styles.weekDaysGrid}>
             <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
           </div>
 
           {/* Main 7x6 Matrix Block rendering grids */}
-          <div style={styles.daysGrid}>
+          <div className="responsive-days-matrix" style={styles.daysGrid}>
             {calendarCells.map((cell, index) => {
               const dayMeetings = getMeetingsForDate(cell.date);
               const hasMeetings = dayMeetings.length > 0;

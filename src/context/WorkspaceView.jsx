@@ -67,18 +67,18 @@ export function WorkspaceView() {
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "4px" }}>
                 <div style={{ display: "flex", gap: "4px" }}>
                   {statusKey !== "todo" && (
-                    <button onClick={() => moveTask(task.id, "prev")} style={{ background: "#2d2d3f", border: "none", color: "#fff", padding: "4px 8px", borderRadius: "4px", cursor: "pointer", display: "flex", alignItems: "center" }}>
-                      <ArrowLeft size={12} />
+                    <button onClick={() => moveTask(task.id, "prev")} style={{ background: "#2d2d3f", border: "none", color: "#fff", padding: "6px 10px", borderRadius: "4px", cursor: "pointer", display: "flex", alignItems: "center" }}>
+                      <ArrowLeft size={14} />
                     </button>
                   )}
                   {statusKey !== "done" && (
-                    <button onClick={() => moveTask(task.id, "next")} style={{ background: "#2d2d3f", border: "none", color: "#fff", padding: "4px 8px", borderRadius: "4px", cursor: "pointer", display: "flex", alignItems: "center" }}>
-                      <ArrowRight size={12} />
+                    <button onClick={() => moveTask(task.id, "next")} style={{ background: "#2d2d3f", border: "none", color: "#fff", padding: "6px 10px", borderRadius: "4px", cursor: "pointer", display: "flex", alignItems: "center" }}>
+                      <ArrowRight size={14} />
                     </button>
                   )}
                 </div>
-                <button onClick={() => deleteTask(task.id)} style={{ background: "transparent", border: "none", color: "#ef4444", cursor: "pointer" }}>
-                  <Trash2 size={14} />
+                <button onClick={() => deleteTask(task.id)} style={{ background: "transparent", border: "none", color: "#ef4444", cursor: "pointer", padding: "4px" }}>
+                  <Trash2 size={16} />
                 </button>
               </div>
             </div>
@@ -90,54 +90,88 @@ export function WorkspaceView() {
   };
 
   return (
-    <div className="workspace-container" style={{ padding: "20px", color: "#fff", fontFamily: "sans-serif" }}>
+    <div className="workspace-container" style={{ padding: "clamp(12px, 4vw, 24px)", color: "#fff", fontFamily: "sans-serif", maxWidth: "1200px", margin: "0 auto" }}>
+      
+      {/* Dynamic Mobile Styling Injection */}
+      <style>{`
+        .responsive-grid-top {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 24px;
+          align-items: start;
+        }
+        .responsive-grid-kanban {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 16px;
+        }
+        @media (max-width: 900px) {
+          .responsive-grid-kanban {
+            grid-template-columns: 1fr;
+          }
+        }
+        @media (max-width: 640px) {
+          .responsive-grid-top {
+            grid-template-columns: 1fr;
+            gap: 16px;
+          }
+          .task-form-container {
+            flex-direction: column;
+          }
+          .task-form-btn {
+            width: 100%;
+            padding: 12px !important;
+          }
+        }
+      `}</style>
+
       <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "24px" }}>
         <Briefcase size={24} color="#a855f7" />
-        <h2 style={{ margin: 0 }}>Team Workspace</h2>
+        <h2 style={{ margin: 0, fontSize: "clamp(20px, 5vw, 28px)" }}>Team Workspace</h2>
       </div>
 
-      {/* Main Grid: Projects Row & Kanban Row */}
+      {/* Main Grid Layout */}
       <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
         
         {/* Row 1: Add Task Form & Projects */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px", alignItems: "start" }}>
+        <div className="responsive-grid-top">
           
           {/* Create Task Box */}
           <div style={{ background: "#1e1e2e", padding: "20px", borderRadius: "12px", border: "1px solid #2d2d3f" }}>
-            <h3 style={{ marginTop: 0, marginBottom: "16px" }}>➕ Add New Task</h3>
-            <form onSubmit={handleAddTask} style={{ display: "flex", gap: "10px" }}>
+            <h3 style={{ marginTop: 0, marginBottom: "16px", fontSize: "16px" }}>➕ Add New Task</h3>
+            <form onSubmit={handleAddTask} className="task-form-container" style={{ display: "flex", gap: "10px" }}>
               <input 
                 type="text" 
                 placeholder="Type a task and hit enter..." 
                 value={newTask}
                 onChange={(e) => setNewTask(e.target.value)}
-                style={{ flex: 1, padding: "10px 14px", borderRadius: "6px", border: "1px solid #2d2d3f", background: "#11111b", color: "#fff" }}
+                style={{ flex: 1, padding: "10px 14px", borderRadius: "6px", border: "1px solid #2d2d3f", background: "#11111b", color: "#fff", fontSize: "14px" }}
               />
-              <button type="submit" style={{ background: "#a855f7", border: "none", color: "#fff", padding: "0 16px", borderRadius: "6px", cursor: "pointer", fontWeight: "600" }}>
-                Add
+              <button className="task-form-btn" type="submit" style={{ background: "#a855f7", border: "none", color: "#fff", padding: "0 20px", borderRadius: "6px", cursor: "pointer", fontWeight: "600", fontSize: "14px", whiteSpace: "nowrap" }}>
+                Add Task
               </button>
             </form>
           </div>
 
-          {/* Projects Summary */}
-          {/* <div style={{ background: "#1e1e2e", padding: "20px", borderRadius: "12px", border: "1px solid #2d2d3f" }}>
-            <h3 style={{ marginTop: 0, marginBottom: "16px", display: "flex", alignItems: "center", gap: "8px" }}><Folder size={18} /> Active Repos</h3>
+          {/* Projects Summary (Uncommented and structured to be safe when active) */}
+          <div style={{ background: "#1e1e2e", padding: "20px", borderRadius: "12px", border: "1px solid #2d2d3f" }}>
+            <h3 style={{ marginTop: 0, marginBottom: "16px", display: "flex", alignItems: "center", gap: "8px", fontSize: "16px" }}><Folder size={18} /> Active Repos</h3>
             <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
               {projects.map((proj) => (
                 <div key={proj.id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 14px", background: "#11111b", borderRadius: "8px" }}>
-                  <div>
-                    <h4 style={{ margin: "0 0 2px 0", fontSize: "14px" }}>{proj.name}</h4>
+                  <div style={{ minWidth: 0, flex: 1, marginRight: "8px" }}>
+                    <h4 style={{ margin: "0 0 2px 0", fontSize: "14px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{proj.name}</h4>
                     <span style={{ fontSize: "12px", color: "#64748b" }}>{proj.platform}</span>
                   </div>
-                  <button style={{ background: "transparent", border: "none", color: "#6366f1", cursor: "pointer" }}><ExternalLink size={14} /></button>
+                  <button style={{ background: "transparent", border: "none", color: "#6366f1", cursor: "pointer", padding: "4px" }}><ExternalLink size={16} /></button>
                 </div>
               ))}
             </div>
-          </div> */}
+          </div>
         </div>
 
         {/* Row 2: Kanban Boards */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "16px" }}>
+        <div className="responsive-grid-kanban">
           <KanbanColumn title="To Do" statusKey="todo" bgColor="#ef4444" />
           <KanbanColumn title="In Progress" statusKey="inprogress" bgColor="#f59e0b" />
           <KanbanColumn title="Done" statusKey="done" bgColor="#22c55e" />
