@@ -9,7 +9,7 @@ import WorkspaceView from "../context/WorkspaceView";
 import RecordingsView from "../context/RecordingView";
 import { 
   LayoutDashboard, Video, PlayCircle, FileText, 
-  Calendar, LogOut, Briefcase, X, Loader2, Menu
+  Calendar, LogOut, Briefcase, X, Loader2 
 } from "lucide-react";
 
 export function Dashboard() {
@@ -18,7 +18,6 @@ export function Dashboard() {
   const [meetings, setMeetings] = useState([]);
   const [activeMenu, setActiveMenu] = useState("dashboard");
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "dark");
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false); // Mobile sidebar state
   
   const API_URL = "https://intellmeet-backend-vufa.onrender.com";
   const [userProfile, setUserProfile] = useState(null);
@@ -332,67 +331,45 @@ export function Dashboard() {
     }
   };
 
-  const handleMenuClick = (menu) => {
-    setActiveMenu(menu);
-    setMobileMenuOpen(false); // Auto-close drawer sidebar layout on choice
-  };
-
   return (
     <div className={`dashboard ${theme}-theme`}>
-      {/* Mobile Top Header Bar */}
-      <div className="mobile-header-bar" style={{ display: 'none', padding: '10px 16px', alignItems: 'center', justifyContent: 'space-between', width: '100%', boxSizing: 'border-box' }}>
-        <div className="logo-container" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <div className="logo-icon" style={{ background: 'linear-gradient(135deg, #6366f1, #a855f7)', padding: '6px', borderRadius: '8px', display: 'flex' }}>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2.5">
+      {/* Sidebar */}
+      <div className="sidebar">
+        <div className="logo-container" style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 0 20px 0' }}>
+          <div className="logo-icon" style={{ 
+            background: 'linear-gradient(135deg, #6366f1, #a855f7)', 
+            padding: '6px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' 
+          }}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275Z"/>
             </svg>
           </div>
-          <h2 className="logo" style={{ margin: 0, fontSize: '18px', fontWeight: '700', color: '#ffffff' }}>IntellMeet</h2>
-        </div>
-        <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} style={{ background: 'none', border: 'none', color: '#ffffff', cursor: 'pointer' }}>
-          {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
-      </div>
-
-      {/* Sidebar - responsive conditional visibility via class string mapping */}
-      <div className={`sidebar ${mobileMenuOpen ? "mobile-open" : ""}`}>
-        <div className="sidebar-brand-wrapper">
-          <div className="logo-container" style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 0 20px 0' }}>
-            <div className="logo-icon" style={{ 
-              background: 'linear-gradient(135deg, #6366f1, #a855f7)', 
-              padding: '6px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' 
-            }}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275Z"/>
-              </svg>
-            </div>
-            <h2 className="logo" style={{ margin: 0, fontSize: '22px', fontWeight: '700', letterSpacing: '-0.5px', color: '#ffffff' }}>
-              Intell<span style={{ fontWeight: '500', color: '#94a3b8' }}>Meet</span>
-            </h2>
-          </div>
+          <h2 className="logo" style={{ margin: 0, fontSize: '22px', fontWeight: '700', letterSpacing: '-0.5px', color: '#ffffff' }}>
+            Intell<span style={{ fontWeight: '500', color: '#94a3b8' }}>Meet</span>
+          </h2>
         </div>
 
         <ul className="sidebar-menu">
-          <li className={activeMenu === "dashboard" ? "active" : ""} onClick={() => handleMenuClick("dashboard")}>
+          <li className={activeMenu === "dashboard" ? "active" : ""} onClick={() => setActiveMenu("dashboard")}>
             <LayoutDashboard className="sidebar-icon" size={18} /> <span>Dashboard</span>
           </li>
-          <li className={activeMenu === "meetings" ? "active" : ""} onClick={() => handleMenuClick("meetings")}>
+          <li className={activeMenu === "meetings" ? "active" : ""} onClick={() => setActiveMenu("meetings")}>
             <Video className="sidebar-icon" size={18} /> <span>Meetings</span>
           </li>
-          <li className={activeMenu === "recordings" ? "active" : ""} onClick={() => handleMenuClick("recordings")}>
+          <li className={activeMenu === "recordings" ? "active" : ""} onClick={() => setActiveMenu("recordings")}>
             <PlayCircle className="sidebar-icon" size={18} /> <span>Recordings</span>
           </li>
-          <li className={activeMenu === "ainotes" ? "active" : ""} onClick={() => handleMenuClick("ainotes")}>
+          <li className={activeMenu === "ainotes" ? "active" : ""} onClick={() => setActiveMenu("ainotes")}>
             <FileText className="sidebar-icon" size={18} /> <span>AI Notes</span>
           </li>
-          <li className={activeMenu === "workspace" ? "active" : ""} onClick={() => handleMenuClick("workspace")}>
+          <li className={activeMenu === "workspace" ? "active" : ""} onClick={() => setActiveMenu("workspace")}>
             <Briefcase className="sidebar-icon" size={18} /> <span>Workspace</span>
           </li>
-          <li className={activeMenu === "calendar" ? "active" : ""} onClick={() => handleMenuClick("calendar")}>
+          <li className={activeMenu === "calendar" ? "active" : ""} onClick={() => setActiveMenu("calendar")}>
             <Calendar className="sidebar-icon" size={18} /> <span>Calendar</span>
           </li>
           
-          <li className={`profile-sidebar-item ${activeMenu === "profile" ? "active" : ""}`} onClick={() => handleMenuClick("profile")}>
+          <li className={`profile-sidebar-item ${activeMenu === "profile" ? "active" : ""}`} onClick={() => setActiveMenu("profile")}>
             <Link to="/dashboard/profile" className="dash-avatar-link">
               <div className="dash-avatar">
                 {userProfile?.profilePic ? (
@@ -414,20 +391,22 @@ export function Dashboard() {
       </div>
 
       {/* Main Content Area */}
-      <div className="main" style={{ width: '100%', boxSizing: 'border-box' }}>
+      <div className="main">
         {/* Topbar */}
         <div className="topbar">
-          <div className="topbar-welcome-text">
+          <div>
             <h2> Welcome back, {username} 👋 </h2>
             <p>Here's what happening today.</p>
           </div>
-          <div className="topbar-actions">
+          <div className="topbar-actions" style={{ display: 'flex', alignItems: 'center', gap: '20px'}}>
             <label className="theme-switch">
               <span className="sun">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g fill="#ffd43b"><circle r={5} cy={12} cx={12} /><path d="m21 13h-1a1 1 0 0 1 0-2h1a1 1 0 0 1 0 2zm-17 0h-1a1 1 0 0 1 0-2h1a1 1 0 0 1 0 2zm13.66-5.66a1 1 0 0 1 -.66-.29 1 1 0 0 1 0-1.41l.71-.71a1 1 0 1 1 1.41 1.41l-.71.71a1 1 0 0 1 -.75.29zm-12.02 12.02a1 1 0 0 1 -.71-.29 1 1 0 0 1 0-1.41l.71-.66a1 1 0 0 1 1.41 1.41l-.71.71a1 1 0 0 1 -.7.24zm6.36-14.36a1 1 0 0 1 -1-1v-1a1 1 0 0 1 2 0v1a1 1 0 0 1 -1 1zm0 17a1 1 0 0 1 -1-1v-1a1 1 0 0 1 2 0v1a1 1 0 0 1 -1 1zm-5.66-14.66a1 1 0 0 1 -.7-.29l-.71-.71a1 1 0 0 1 1.41-1.41l.71.71a1 1 0 0 1 0 1.41 1 1 0 0 1 -.71.29zm12.02 12.02a1 1 0 0 1 -.7-.29l-.66-.71a1 1 0 0 1 1.36-1.36l.71.71a1 1 0 0 1 0 1.41 1 1 0 0 1 -.71.24z" /></g></svg>
+                {/* Added explicit width & height constraint to protect layout logic */}
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><g fill="#ffd43b"><circle r={5} cy={12} cx={12} /><path d="m21 13h-1a1 1 0 0 1 0-2h1a1 1 0 0 1 0 2zm-17 0h-1a1 1 0 0 1 0-2h1a1 1 0 0 1 0 2zm13.66-5.66a1 1 0 0 1 -.66-.29 1 1 0 0 1 0-1.41l.71-.71a1 1 0 1 1 1.41 1.41l-.71.71a1 1 0 0 1 -.75.29zm-12.02 12.02a1 1 0 0 1 -.71-.29 1 1 0 0 1 0-1.41l.71-.66a1 1 0 0 1 1.41 1.41l-.71.71a1 1 0 0 1 -.7.24zm6.36-14.36a1 1 0 0 1 -1-1v-1a1 1 0 0 1 2 0v1a1 1 0 0 1 -1 1zm0 17a1 1 0 0 1 -1-1v-1a1 1 0 0 1 2 0v1a1 1 0 0 1 -1 1zm-5.66-14.66a1 1 0 0 1 -.7-.29l-.71-.71a1 1 0 0 1 1.41-1.41l.71.71a1 1 0 0 1 0 1.41 1 1 0 0 1 -.71.29zm12.02 12.02a1 1 0 0 1 -.7-.29l-.66-.71a1 1 0 0 1 1.36-1.36l.71.71a1 1 0 0 1 0 1.41 1 1 0 0 1 -.71.24z" /></g></svg>
               </span>
               <span className="moon">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path d="m223.5 32c-123.5 0-223.5 100.3-223.5 224s100 224 223.5 224c60.6 0 115.5-24.2 155.8-63.4 5-4.9 6.3-12.5 3.1-18.7s-10.1-9.7-17-8.5c-9.8 1.7-19.8 2.6-30.1 2.6-96.9 0-175.5-78.8-175.5-176 0-65.8 36-123.1 89.3-153.3 6.1-3.5 9.2-10.5 7.7-17.3s-7.3-11.9-14.3-12.5c-6.3-.5-12.6-.8-19-.8z" /></svg>
+                {/* Added explicit width & height constraint to protect layout logic */}
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 384 512"><path d="m223.5 32c-123.5 0-223.5 100.3-223.5 224s100 224 223.5 224c60.6 0 115.5-24.2 155.8-63.4 5-4.9 6.3-12.5 3.1-18.7s-10.1-9.7-17-8.5c-9.8 1.7-19.8 2.6-30.1 2.6-96.9 0-175.5-78.8-175.5-176 0-65.8 36-123.1 89.3-153.3 6.1-3.5 9.2-10.5 7.7-17.3s-7.3-11.9-14.3-12.5c-6.3-.5-12.6-.8-19-.8z" /></svg>
               </span>   
               <input type="checkbox" className="theme-input" checked={theme === "light"} onChange={handleThemeChange} />
               <span className="theme-slider" />
@@ -452,8 +431,8 @@ export function Dashboard() {
 
       {/* Schedule Modal Overlay */}
       {showScheduleModal && (
-        <div className="modal-overlay" style={{ padding: '10px' }}>
-          <div className="schedule-modal" style={{ width: '100%', maxWidth: '500px', boxSizing: 'border-box' }}>
+        <div className="modal-overlay">
+          <div className="schedule-modal">
             <div className="modal-header">
               <h3>{editingMeetingId ? "Edit Scheduled Meeting" : "Schedule New Meeting"}</h3>
               <button className="close-btn" onClick={() => setShowScheduleModal(false)}>
@@ -469,7 +448,6 @@ export function Dashboard() {
                   value={scheduleTitle}
                   onChange={(e) => setScheduleTitle(e.target.value)}
                   required
-                  style={{ width: '100%', boxSizing: 'border-box' }}
                 />
               </div>
               <div className="form-group">
@@ -479,10 +457,9 @@ export function Dashboard() {
                   value={scheduleTime}
                   onChange={(e) => setScheduleTime(e.target.value)}
                   required
-                  style={{ width: '100%', boxSizing: 'border-box' }}
                 />
               </div>
-              <div className="modal-actions" style={{ flexWrap: 'wrap', gap: '10px' }}>
+              <div className="modal-actions">
                 <button type="button" className="cancel-btn" onClick={() => setShowScheduleModal(false)}>
                   Cancel
                 </button>

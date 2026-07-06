@@ -1,65 +1,43 @@
-/* Base flex containers setup */
-.dashboard {
-  display: flex;
-  min-height: 100vh;
-  flex-direction: row;
+/* Safely constrain the theme toggle SVGs */
+.theme-switch img, 
+.theme-switch svg {
+  width: 20px !important;
+  height: 20px !important;
+  max-width: 20px;
+  max-height: 20px;
 }
 
-/* On mobile/tablets viewports */
-@media (max-width: 768px) {
+/* Responsive breakpoint rules */
+@media (max-width: 900px) {
   .dashboard {
-    flex-direction: column; /* Stacks header vertically above content */
+    flex-direction: column;
   }
-
-  .mobile-header-bar {
-    display: flex !important; /* Shows up on phone devices */
-    background-color: #1e1e2e; /* Update according to theme colors */
-    border-bottom: 1px solid #2d2d44;
-  }
-
+  
   .sidebar {
-    position: fixed;
-    top: 56px; /* Below mobile top bar */
-    left: -100%;
-    width: 260px;
-    height: calc(100vh - 56px);
-    z-index: 999;
-    transition: left 0.3s ease-in-out;
+    width: 100%;
+    height: auto;
+    padding: 15px;
+    box-sizing: border-box;
   }
-
-  .sidebar.mobile-open {
-    left: 0; /* Slide menu into display view */
-  }
-
-  .sidebar-brand-wrapper {
-    display: none; /* Hide internal brand info since top-bar header has it */
+  
+  .sidebar-menu {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 0;
   }
 
   .topbar {
     flex-direction: column;
-    align-items: flex-start !important;
-    gap: 16px;
-    padding: 16px;
-  }
-
-  .topbar-actions {
-    width: 100%;
-    justify-content: space-between;
-    flex-wrap: wrap;
-  }
-
-  .meeting-box, .meeting-box button {
-    width: 100%;
+    align-items: flex-start;
+    gap: 15px;
   }
 
   .cards {
-    grid-template-columns: 1fr !important; /* Stack stats cards vertically */
-    gap: 12px;
-    padding: 16px;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) !important;
   }
 
   .meeting-sections {
-    grid-template-columns: 1fr !important; /* Upcoming and Recent layout panels stacked */
-    padding: 0 16px;
+    grid-template-columns: 1fr !important;
   }
 }
