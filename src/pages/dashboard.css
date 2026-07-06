@@ -440,7 +440,7 @@ li span a, li a {
   font-weight: 600;
   font-size: 14px;
   cursor: pointer;
-  margin-top: 20px; /* Safe space spacing change */
+  margin-top: 60px;
   transition: all 0.2s ease;
 }
 
