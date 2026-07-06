@@ -72,14 +72,37 @@ function RecordingsView() {
   }
 
   return (
-    <div style={{ padding: "32px", color: "white", fontFamily: "system-ui, -apple-system, sans-serif" }}>
-      <h2 style={{ fontSize: "24px", fontWeight: "700", marginBottom: "6px" }}>Saved Recordings</h2>
+    <div style={{ 
+      padding: "clamp(16px, 4vw, 32px)", 
+      color: "white", 
+      fontFamily: "system-ui, -apple-system, sans-serif",
+      maxWidth: "1400px",
+      margin: "0 auto"
+    }}>
+      {/* Inline styles helper sheet for deep mobile layout optimization */}
+      <style>{`
+        .recordings-responsive-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
+          gap: clamp(16px, 3vw, 24px);
+        }
+        @media (max-width: 480px) {
+          .recording-card-title {
+            font-size: 16px !important;
+          }
+          .recording-empty-wrapper {
+            padding: 32px 16px !important;
+          }
+        }
+      `}</style>
+
+      <h2 style={{ fontSize: "clamp(20px, 5vw, 24px)", fontWeight: "700", marginBottom: "6px" }}>Saved Recordings</h2>
       <p style={{ color: "#94a3b8", fontSize: "14px", marginBottom: "28px" }}>
         Review, playback, or delete your recorded video sessions.
       </p>
 
       {recordings.length === 0 ? (
-        <div style={{ 
+        <div className="recording-empty-wrapper" style={{ 
           marginTop: "40px", 
           display: "flex", 
           flexDirection: "column", 
@@ -89,34 +112,32 @@ function RecordingsView() {
           background: "#1e293b",
           borderRadius: "16px",
           border: "1px dashed #334155",
-          color: "#94a3b8"
+          color: "#94a3b8",
+          textAlign: "center"
         }}>
           <VideoOff size={44} style={{ marginBottom: "12px", color: "#64748b" }} />
-          <p style={{ fontSize: "16px", fontWeight: "500" }}>No recording files found in your database.</p>
+          <p style={{ fontSize: "16px", fontWeight: "500", margin: 0 }}>No recording files found in your database.</p>
         </div>
       ) : (
-        <div style={{ 
-          display: "grid", 
-          gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", 
-          gap: "24px" 
-        }}>
+        <div className="recordings-responsive-grid">
           {recordings.map((rec) => {
             return (
               <div 
                 key={rec._id} 
                 style={{ 
                   background: "#1e293b", 
-                  padding: "20px", 
+                  padding: "clamp(16px, 3vw, 20px)", 
                   borderRadius: "16px", 
                   border: "1px solid #334155",
                   display: "flex",
                   flexDirection: "column",
                   boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.3)",
-                  position: "relative"
+                  position: "relative",
+                  minWidth: 0 // Prevents grid layout blowouts from flexing content
                 }}
               >
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "12px", marginBottom: "6px" }}>
-                  <h3 style={{ 
+                  <h3 className="recording-card-title" style={{ 
                     fontSize: "18px", 
                     fontWeight: "600", 
                     margin: 0,
@@ -141,7 +162,8 @@ function RecordingsView() {
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
-                      transition: "all 0.2s"
+                      transition: "all 0.2s",
+                      flexShrink: 0 // Blocks action button from narrowing under flex space strain
                     }}
                     onMouseEnter={(e) => e.currentTarget.style.color = "#ef4444"}
                     onMouseLeave={(e) => e.currentTarget.style.color = "#94a3b8"}
@@ -169,7 +191,8 @@ function RecordingsView() {
                   aspectRatio: "16/9",
                   display: "flex",
                   alignItems: "center",
-                  justifyContent: "center"
+                  justifyContent: "center",
+                  marginTop: "auto" // Forces layout components to anchor cards perfectly even if titles wrap
                 }}>
                   {(() => {
                     const rawUrl = rec.recordingUrl || rec.recordingURL || rec.videoUrl || "";
@@ -197,7 +220,7 @@ function RecordingsView() {
                         src={videoSrc} 
                         controls 
                         width="100%" 
-                        style={{ display: "block", width: "100%", height: "100%" }} 
+                        style={{ display: "block", width: "100%", height: "100%", objectFit: "contain" }} 
                       />
                     );
                   })()}
