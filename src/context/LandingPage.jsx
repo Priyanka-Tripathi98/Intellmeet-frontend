@@ -298,12 +298,11 @@ export default function LandingPage() {
         </div>
       </main>
 
-      {/* Sub-sections inherit context mode values directly */}
-      <Features currentTheme={isDarkMode ? "dark" : "light"} />
-      <HowItWorks currentTheme={isDarkMode ? "dark" : "light"} />
-      <Pricing currentTheme={isDarkMode ? "dark" : "light"} />
-      <About currentTheme={isDarkMode ? "dark" : "light"} />
-      <Footer currentTheme={isDarkMode ? "dark" : "light"} />
+<Features darkMode={isDarkMode} toggleTheme={toggleTheme} />
+<HowItWorks darkMode={isDarkMode} />
+<Pricing darkMode={isDarkMode} />
+<About darkMode={isDarkMode} />
+<Footer darkMode={isDarkMode} />
     </div>
   );
 }
