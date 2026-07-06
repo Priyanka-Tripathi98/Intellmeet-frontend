@@ -5,6 +5,7 @@ import HowItWorks from "../context/HowItWorks";
 import Pricing from "../context/Pricing";
 import About from "../context/About";
 import Footer from "../context/Footer";
+import { Link } from "react-router-dom";
 
 export default function LandingPage() {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -136,12 +137,16 @@ export default function LandingPage() {
                   marginBottom: "38px",
                 }}
               >
+                <Link to="/signup" style={{textDecoration: "none",}}>
                 <button style={{ background: "linear-gradient(135deg,#7c3aed,#6366f1)", border: "none", padding: "16px 28px", borderRadius: "14px", color: "white", fontWeight: "600", cursor: "pointer", fontSize: "15px", flex: isMobile ? "1" : "none", minWidth: isMobile ? "100%" : "auto", boxShadow: "0 10px 30px rgba(124,58,237,0.35)" }}>
                   Get Started Free
                 </button>
+                </Link>
+                <Link to="/signup" style={{textDecoration: "none",}}>
                 <button style={{ background: "transparent", border: "1px solid rgba(255,255,255,0.12)", padding: "16px 28px", borderRadius: "14px", color: "white", fontWeight: "500", cursor: "pointer", fontSize: "15px", flex: isMobile ? "1" : "none", minWidth: isMobile ? "100%" : "auto" }}>
                   ▶ Watch Demo
                 </button>
+                </Link>
               </div>
 
               {/* REUSABLE MINIMAL BADGES */}
