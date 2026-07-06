@@ -6,13 +6,15 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 40px;
+  padding: clamp(16px, 4vw, 40px); /* Fluid wrapper padding */
   font-family: "Poppins", sans-serif;
+  box-sizing: border-box;
 }
 
 /* ONE MAIN BOX */
 .settings-layout {
-  width: 780px;
+  width: 100%;
+  max-width: 780px; /* Adapts dynamically to any parent screen width */
   display: flex;
   background: rgba(13, 18, 36, 0.75);
   backdrop-filter: blur(16px);
@@ -22,6 +24,7 @@
   overflow: hidden;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), 
               0 0 60px rgba(124, 58, 237, 0.08);
+  box-sizing: border-box;
 }
 
 /* LEFT SIDEBAR */
@@ -30,6 +33,17 @@
   padding: 35px 15px;
   border-right: 1px solid rgba(255, 255, 255, 0.05);
   background: rgba(8, 11, 23, 0.5);
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+/* Sidebar Title Section */
+.sidebar-header-title h3 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 16px;
+  color: #94a3b8;
+  font-weight: 600;
 }
 
 /* Sidebar Menu */
@@ -39,11 +53,11 @@
   gap: 8px;
 }
 
-/* Base style for tabs - Updated to perfectly align items and handle inner spacing */
+/* Base style for tabs */
 .settings-item {
   display: flex;
   align-items: center;
-  justify-content: space-between; /* Pushes the right-arrow icon to the absolute end */
+  justify-content: space-between;
   gap: 12px;
   padding: 14px 18px;
   border-radius: 12px;
@@ -55,11 +69,11 @@
   font-weight: 500;
   text-decoration: none;
   box-sizing: border-box;
+  border: none;
+  width: 100%;
 }
 
-/* Helper container inside settings-item for icon + label pairing */
-.settings-item > div,
-.settings-item > span {
+.settings-item-left {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -70,8 +84,6 @@
   color: #a78bfa !important;
   transition: color 0.3s ease;
   flex-shrink: 0;
-  display: inline-block;
-  vertical-align: middle;
 }
 
 /* Identical Hover state */
@@ -100,18 +112,21 @@
   flex: 1;
   padding: 40px;
   background: transparent;
+  box-sizing: border-box;
+  min-width: 0; /* Prevents text overflow layout breaks */
 }
 
 /* Title */
 .profile-title {
   font-size: 26px;
   font-weight: 700;
+  margin-top: 0;
   margin-bottom: 30px;
   color: white;
   letter-spacing: -0.5px;
 }
 
-/* Header */
+/* Header Banner */
 .profile-header {
   display: flex;
   align-items: center;
@@ -121,6 +136,7 @@
   padding: 20px;
   border-radius: 16px;
   border: 1px solid rgba(255, 255, 255, 0.03);
+  box-sizing: border-box;
 }
 
 /* Avatar */
@@ -138,6 +154,7 @@
   overflow: hidden;
   box-shadow: 0 8px 24px rgba(124, 58, 237, 0.3);
   border: 2px solid rgba(255, 255, 255, 0.1);
+  flex-shrink: 0;
 }
 
 .avatar img {
@@ -147,16 +164,29 @@
 }
 
 /* Name and details container */
-.profile-header h2 {
+.profile-meta-details {
+  min-width: 0;
+  flex: 1;
+}
+
+.profile-meta-details h2 {
   font-size: 20px;
   font-weight: 600;
   color: white;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.profile-header p {
+.profile-meta-details p {
   color: #64748b;
   margin-top: 4px;
+  margin-bottom: 0;
   font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Change Photo Button */
@@ -183,7 +213,7 @@
   border-color: rgba(124, 58, 237, 0.4);
 }
 
-/* Form */
+/* Form Layout */
 .profile-info {
   display: flex;
   flex-direction: column;
@@ -213,6 +243,7 @@
   outline: none;
   font-size: 14px;
   transition: all 0.2s ease;
+  box-sizing: border-box;
 }
 
 .info-group input:focus {
@@ -247,8 +278,10 @@
   transform: translateY(1px);
 }
 
-/* Responsive */
-@media(max-width: 768px) {
+/* ================= RESPONSIVE MEDIA BREAKPOINTS ================= */
+
+/* Tablets & Small Laptops */
+@media (max-width: 768px) {
   .profile-wrapper {
     padding: 16px;
   }
@@ -261,20 +294,38 @@
 
   .settings-sidebar {
     width: 100%;
-    padding: 20px;
+    padding: 16px;
     border-right: none;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .sidebar-header-title {
+    display: none; /* Hide header text to optimize tab real estate */
   }
 
   .settings-menu {
     flex-direction: row;
     overflow-x: auto;
-    padding-bottom: 5px;
+    padding-bottom: 4px;
+    gap: 12px;
+    /* Webkit scrollbar optimizations for dynamic touch gestures */
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Hide modern scrollbars inside row layouts */
+  .settings-menu::-webkit-scrollbar {
+    display: none;
   }
 
   .settings-item {
+    width: auto;
     padding: 10px 16px;
     white-space: nowrap;
+    border-radius: 10px;
+  }
+
+  .sidebar-arrow {
+    display: none !important; /* Hide chevron icons in row navigation mode */
   }
 
   .profile-card {
@@ -289,5 +340,26 @@
   .profile-header {
     gap: 16px;
     padding: 16px;
+  }
+}
+
+/* Compact Mobile Viewports */
+@media (max-width: 480px) {
+  .profile-header {
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    gap: 14px;
+    padding: 20px 16px;
+  }
+
+  .profile-meta-details h2,
+  .profile-meta-details p {
+    white-space: normal; /* Wrapping text block rules on tiny viewport widths */
+    word-break: break-word;
+  }
+
+  .info-group input {
+    padding: 12px;
   }
 }
