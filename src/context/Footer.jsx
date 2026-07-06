@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Video, FileText, Mic } from "lucide-react";
+import emailjs from "@emailjs/browser"; // 1. Import EmailJS
 
 export default function Footer() {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [email, setEmail] = useState(""); // 2. State for input tracking
+  const [loading, setLoading] = useState(false); // 3. State for submission loading spinner/disable
 
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth);
@@ -18,6 +21,35 @@ export default function Footer() {
     if (isMobile) return "1fr";
     if (isTablet) return "1fr 1fr";
     return "1.4fr 1fr 1fr 1fr 1.5fr"; // Desktop layout
+  };
+
+  // 4. Handle newsletter form submission via EmailJS
+  const handleSubscribe = (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    const templateParams = {
+      subscriber_email: email, // This must match your target {{subscriber_email}} variable in the EmailJS panel template
+    };
+
+    emailjs
+      .send(
+        "service_dhyhuag",
+        "template_1x5r6gl",
+        templateParams,
+        "vG69igiSI3mR8BND-"
+      )
+      .then((response) => {
+        alert("🎉 Successfully subscribed! Check your inbox.");
+        setEmail(""); // Reset input field on complete success
+      })
+      .catch((err) => {
+        console.error("EmailJS Submission Error:", err);
+        alert("Something went wrong. Please check your credentials and try again.");
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   return (
@@ -164,7 +196,9 @@ export default function Footer() {
             Subscribe to our newsletter for the latest updates and tips.
           </p>
 
-          <div
+          {/* 5. Converted wrapper <div> to a <form> element */}
+          <form
+            onSubmit={handleSubscribe}
             style={{
               display: "flex",
               flexDirection: isMobile ? "column" : "row",
@@ -174,7 +208,10 @@ export default function Footer() {
           >
             <input
               type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email"
+              required
               style={{
                 flex: 1,
                 padding: "16px",
@@ -189,21 +226,25 @@ export default function Footer() {
               }}
             />
 
+            {/* 6. Hooked button up to submission handling & tracking states */}
             <button
+              type="submit"
+              disabled={loading}
               style={{
                 padding: "16px 28px",
                 borderRadius: "12px",
                 border: "none",
-                cursor: "pointer",
+                cursor: loading ? "not-allowed" : "pointer",
+                opacity: loading ? 0.7 : 1,
                 fontWeight: "600",
                 color: "#fff",
                 background: "linear-gradient(135deg,#c084fc,#8b5cf6)",
                 width: isMobile ? "100%" : "auto",
               }}
             >
-              Subscribe
+              {loading ? "Subscribing..." : "Subscribe"}
             </button>
-          </div>
+          </form>
         </div>
       </div>
 
