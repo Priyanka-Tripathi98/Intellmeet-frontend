@@ -223,6 +223,7 @@ export default function Footer() {
                 fontSize: "15px",
                 width: isMobile ? "100%" : "auto",
                 boxSizing: "border-box",
+                cursor:"pointer"
               }}
             />
 
