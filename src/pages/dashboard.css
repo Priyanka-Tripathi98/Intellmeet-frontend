@@ -70,6 +70,7 @@ body {
   display: flex;
   flex-direction: column;
   transition: background-color 0.3s ease, border-color 0.3s ease;
+  flex-shrink: 0;
 }
 
 .sidebar-menu {
@@ -154,6 +155,7 @@ li span a, li a {
   flex-direction: column;
   gap: 28px;
   overflow-y: auto;
+  min-width: 0; /* Prevents flex children from breaking boundaries */
 }
 
 .topbar {
@@ -162,6 +164,7 @@ li span a, li a {
   align-items: center;
   border-bottom: 1px solid var(--border-color);
   padding-bottom: 20px;
+  gap: 20px;
 }
 
 .topbar h2 {
@@ -171,6 +174,13 @@ li span a, li a {
 .topbar p {
   color: var(--text-muted);
   margin-top: 4px;
+}
+
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
 }
 
 /* ==========================================================================
@@ -217,6 +227,7 @@ li span a, li a {
   display: inline-block;
   width: 64px;
   height: 34px;
+  flex-shrink: 0;
 }
 
 .theme-switch .theme-input {
@@ -248,13 +259,19 @@ li span a, li a {
   transition: .4s;
 }
 
+/* Strict sizes enforced on switch children icons to stop responsive blowups */
+.theme-switch svg {
+  width: 22px !important;
+  height: 22px !important;
+  max-width: 22px !important;
+  max-height: 22px !important;
+}
+
 .sun svg {
   position: absolute;
   top: 5px;
   left: 33px;
   z-index: 1;
-  width: 22px;
-  height: 22px;
   animation: rotate 15s linear infinite;
 }
 
@@ -264,8 +281,6 @@ li span a, li a {
   top: 5px;
   left: 5px;
   z-index: 1;
-  width: 22px;
-  height: 22px;
   animation: tilt 5s linear infinite;
 }
 
@@ -425,7 +440,7 @@ li span a, li a {
   font-weight: 600;
   font-size: 14px;
   cursor: pointer;
-  margin-top: auto;
+  margin-top: 20px; /* Safe space spacing change */
   transition: all 0.2s ease;
 }
 
@@ -445,6 +460,7 @@ li span a, li a {
   font-weight: 600;
   cursor: pointer;
   transition: background 0.2s;
+  white-space: nowrap;
 }
 
 .meeting-box button:hover {
@@ -455,12 +471,6 @@ li span a, li a {
   color: var(--text-muted);
   text-align: center;
   padding: 20px;
-}
-
-@media (max-width: 900px) {
-  .meeting-sections {
-    grid-template-columns: 1fr;
-  }
 }
 
 /* ==========================================================================
@@ -475,6 +485,7 @@ li span a, li a {
   align-items: center;
   justify-content: center;
   z-index: 1000;
+  padding: 20px;
 }
 
 .schedule-modal {
@@ -571,4 +582,88 @@ li span a, li a {
 
 @keyframes spin {
   to { transform: rotate(360deg); }
+}
+
+/* ==========================================================================
+   10. Mobile Responsive Layout Transformations
+   ========================================================================== */
+@media (max-width: 900px) {
+  .dashboard {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid var(--border-color);
+    padding: 16px;
+  }
+
+  .sidebar-menu {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .sidebar-menu li {
+    margin-bottom: 0;
+    padding: 8px 12px;
+    font-size: 14px;
+    flex: 1 1 auto;
+    justify-content: center;
+  }
+
+  .profile-sidebar-item, .logout-btn {
+    margin-top: 0;
+  }
+  
+  .logout-btn {
+    padding: 8px 16px;
+  }
+
+  .main {
+    padding: 16px;
+    gap: 20px;
+  }
+
+  .topbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .cards {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .meeting-sections {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .sidebar-menu {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .profile-sidebar-item {
+    grid-column: span 2;
+  }
+
+  .topbar-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .meeting-box {
+    width: 100%;
+  }
+
+  .meeting-box button {
+    width: 100%;
+    text-align: center;
+  }
 }
