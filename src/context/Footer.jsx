@@ -1,11 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { Video, FileText, Mic } from "lucide-react";
+import { Video, FileText, Mic, ChevronDown, ChevronUp } from "lucide-react";
 import emailjs from "@emailjs/browser";
 
 export default function Footer() {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
+  
+  // Track open state for collapsible sections on mobile/tablet
+  const [openSections, setOpenSections] = useState({
+    product: false,
+    company: false,
+    resources: false,
+  });
 
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth);
@@ -15,21 +22,30 @@ export default function Footer() {
 
   const isMobile = windowWidth < 640;
   const isTablet = windowWidth >= 640 && windowWidth < 1024;
+  const isCollapsible = windowWidth < 1024; // Collapse menus on both mobile and tablet
 
-  // Determine grid layout dynamically based on screen size
+  // Dynamic grid template
   const getGridTemplateColumns = () => {
     if (isMobile) return "1fr";
     if (isTablet) return "1fr 1fr";
     return "1.4fr 1fr 1fr 1fr 1.5fr"; // Desktop layout
   };
 
-  // 4. Handle newsletter form submission via EmailJS
+  // Toggle sections individually
+  const toggleSection = (section) => {
+    if (!isCollapsible) return; // Disable clicking to toggle on desktop
+    setOpenSections((prev) => ({
+      ...prev,
+      [section]: !prev[section],
+    }));
+  };
+
   const handleSubscribe = (e) => {
     e.preventDefault();
     setLoading(true);
 
     const templateParams = {
-      subscriber_email: email, 
+      subscriber_email: email,
     };
 
     emailjs
@@ -39,9 +55,9 @@ export default function Footer() {
         templateParams,
         "vG69igiSI3mR8BND-"
       )
-      .then((response) => {
+      .then(() => {
         alert("🎉 Successfully subscribed!");
-        setEmail(""); // Reset input field on complete success
+        setEmail("");
       })
       .catch((err) => {
         console.error("EmailJS Submission Error:", err);
@@ -66,13 +82,13 @@ export default function Footer() {
         style={{
           display: "grid",
           gridTemplateColumns: getGridTemplateColumns(),
-          gap: isMobile ? "40px" : "50px",
+          gap: isMobile ? "30px" : "50px",
           paddingBottom: "60px",
           borderBottom: "1px solid rgba(255,255,255,0.08)",
         }}
       >
         {/* Brand */}
-        <div>
+        <div style={{ marginBottom: isCollapsible ? "15px" : "0" }}>
           <div
             style={{
               display: "flex",
@@ -143,10 +159,16 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Product */}
-        <div>
-          <h2 style={headingStyle}>Product</h2>
-          <div style={linkContainer}>
+        {/* Product Section */}
+        <div style={collapsibleContainer(isCollapsible)}>
+          <h2 
+            style={headingStyle(isCollapsible)} 
+            onClick={() => toggleSection("product")}
+          >
+            Product
+            {isCollapsible && (openSections.product ? <ChevronUp size={18} /> : <ChevronDown size={18} />)}
+          </h2>
+          <div style={linkContainer(isCollapsible, openSections.product)}>
             <a href="#" style={linkStyle}>Features</a>
             <a href="#" style={linkStyle}>How it Works</a>
             <a href="#" style={linkStyle}>Pricing</a>
@@ -156,10 +178,16 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Company */}
-        <div>
-          <h2 style={headingStyle}>Company</h2>
-          <div style={linkContainer}>
+        {/* Company Section */}
+        <div style={collapsibleContainer(isCollapsible)}>
+          <h2 
+            style={headingStyle(isCollapsible)} 
+            onClick={() => toggleSection("company")}
+          >
+            Company
+            {isCollapsible && (openSections.company ? <ChevronUp size={18} /> : <ChevronDown size={18} />)}
+          </h2>
+          <div style={linkContainer(isCollapsible, openSections.company)}>
             <a href="#" style={linkStyle}>About Us</a>
             <a href="#" style={linkStyle}>Blog</a>
             <a href="#" style={linkStyle}>Careers</a>
@@ -168,10 +196,16 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Resources */}
-        <div>
-          <h2 style={headingStyle}>Resources</h2>
-          <div style={linkContainer}>
+        {/* Resources Section */}
+        <div style={collapsibleContainer(isCollapsible)}>
+          <h2 
+            style={headingStyle(isCollapsible)} 
+            onClick={() => toggleSection("resources")}
+          >
+            Resources
+            {isCollapsible && (openSections.resources ? <ChevronUp size={18} /> : <ChevronDown size={18} />)}
+          </h2>
+          <div style={linkContainer(isCollapsible, openSections.resources)}>
             <a href="#" style={linkStyle}>Help Center</a>
             <a href="#" style={linkStyle}>Guides</a>
             <a href="#" style={linkStyle}>API Docs</a>
@@ -181,7 +215,7 @@ export default function Footer() {
         </div>
 
         {/* Newsletter */}
-        <div>
+        <div style={{ marginTop: isCollapsible ? "20px" : "0" }}>
           <h2 style={{ fontSize: "22px", fontWeight: "600", marginBottom: "20px", marginTop: 0 }}>
             Stay in the loop
           </h2>
@@ -196,7 +230,6 @@ export default function Footer() {
             Subscribe to our newsletter for the latest updates and tips.
           </p>
 
-          {/* 5. Converted wrapper <div> to a <form> element */}
           <form
             onSubmit={handleSubscribe}
             style={{
@@ -223,18 +256,16 @@ export default function Footer() {
                 fontSize: "15px",
                 width: isMobile ? "100%" : "auto",
                 boxSizing: "border-box",
-                cursor:"pointer"
               }}
             />
 
-            {/* 6. Hooked button up to submission handling & tracking states */}
             <button
               type="submit"
               disabled={loading}
               style={{
                 padding: "16px 28px",
                 borderRadius: "12px",
-                border: "none",
+                border: "0",
                 cursor: loading ? "not-allowed" : "pointer",
                 opacity: loading ? 0.7 : 1,
                 fontWeight: "600",
@@ -288,25 +319,36 @@ export default function Footer() {
   );
 }
 
-// Inline constant styles
-const headingStyle = {
-  fontSize: "22px",
-  fontWeight: "600",
-  marginBottom: "30px",
-  marginTop: 0,
-};
+// Updated styles to accept parameters for toggling layout states
+const collapsibleContainer = (isCollapsible) => ({
+  borderBottom: isCollapsible ? "1px solid rgba(255,255,255,0.05)" : "none",
+  paddingBottom: isCollapsible ? "10px" : "0",
+});
 
-const linkContainer = {
+const headingStyle = (isCollapsible) => ({
+  fontSize: "20px",
+  fontWeight: "600",
+  marginBottom: isCollapsible ? "12px" : "30px",
+  marginTop: 0,
   display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  cursor: isCollapsible ? "pointer" : "default",
+  userSelect: "none",
+});
+
+const linkContainer = (isCollapsible, isOpen) => ({
+  display: isCollapsible && !isOpen ? "none" : "flex",
   flexDirection: "column",
-  gap: "22px",
-};
+  gap: "18px",
+  paddingBottom: isCollapsible ? "15px" : "0",
+  paddingLeft: isCollapsible ? "5px" : "0",
+});
 
 const linkStyle = {
   color: "#94a3b8",
   textDecoration: "none",
   fontSize: "16px",
-  transition: "0.3s",
 };
 
 const bottomLink = {
