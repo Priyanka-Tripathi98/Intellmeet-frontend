@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Video, FileText, Mic } from "lucide-react";
-import emailjs from "@emailjs/browser"; // 1. Import EmailJS
+import emailjs from "@emailjs/browser";
 
 export default function Footer() {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const [email, setEmail] = useState(""); // 2. State for input tracking
-  const [loading, setLoading] = useState(false); // 3. State for submission loading spinner/disable
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth);
@@ -29,7 +29,7 @@ export default function Footer() {
     setLoading(true);
 
     const templateParams = {
-      subscriber_email: email, // This must match your target {{subscriber_email}} variable in the EmailJS panel template
+      subscriber_email: email, 
     };
 
     emailjs
@@ -40,7 +40,7 @@ export default function Footer() {
         "vG69igiSI3mR8BND-"
       )
       .then((response) => {
-        alert("🎉 Successfully subscribed! Check your inbox.");
+        alert("🎉 Successfully subscribed!");
         setEmail(""); // Reset input field on complete success
       })
       .catch((err) => {
