@@ -1001,12 +1001,12 @@ function Video() {
             <h3 style={{ margin: 0, fontSize: "16px", fontWeight: "600" }}>Room Dashboard</h3>
           </div>
 
-          {/* TRANSCRIPT & NOTES BOX (AI SUMMARY VIEWPORT) */}
+          {/* TRANSCRIPT & NOTES BOX (AI SUMMARY VIEWPORT)
           <AICompanion 
             aiState={aiLiveState} 
             meetingNotes={meetingNotes} 
             liveTranscript={liveTranscript} 
-          />
+          /> */}
 
           {/* CHAT MESSAGES DISPLAY STAGE */}
           <div style={{ flex: 1, padding: "20px", overflowY: "auto", display: "flex", flexDirection: "column", gap: "12px" }}>
