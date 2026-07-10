@@ -372,7 +372,7 @@ li span a, li a {
   background: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: 14px;
-  padding: 24px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
 }
