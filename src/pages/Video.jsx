@@ -1030,6 +1030,50 @@ function Video() {
             ))}
             <div ref={chatEndRef} />
           </div>
+          <div style={{ padding: '12px', borderTop: '1px solid rgba(255,255,255,0.05)', position: 'relative' }}>
+  
+  {/* Render the floating Emoji Picker above the input if toggle is active */}
+  {showEmojiPicker && (
+    <div style={{ position: 'absolute', bottom: '70px', right: '10px', zIndex: 1000 }}>
+      <EmojiPicker 
+        theme="dark"
+        onEmojiClick={(emojiData) => {
+          // Appends the chosen emoji character to your current message string text
+          setMessage((prev) => prev + emojiData.emoji);
+          setShowEmojiPicker(false); // Auto-close picker window after selecting
+        }} 
+      />
+    </div>
+  )}
+
+  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'rgba(255,255,255,0.03)', padding: '4px 8px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
+    
+    {/* Sleek Smile Button to Toggle Picker Window */}
+    <button 
+      type="button"
+      onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+      style={{ background: 'none', border: 'none', color: showEmojiPicker ? '#a78bfa' : '#9ca3af', cursor: 'pointer', display: 'flex', alignItems: 'center', padding: '4px' }}
+    >
+      😊
+    </button>
+
+    <input
+      type="text"
+      value={message}
+      onChange={handleInputChange}
+      placeholder="Type a message..."
+      onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
+      style={{ flex: 1, background: 'none', border: 'none', color: '#fff', outline: 'none', fontSize: '14px' }}
+    />
+
+    <button 
+      onClick={sendMessage}
+      style={{ background: '#7c3aed', border: 'none', borderRadius: '6px', color: '#fff', padding: '6px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+    >
+      <Send size={14} />
+    </button>
+  </div>
+</div>
 
           {/* INPUT BAR SYSTEM */}
           <div style={{ padding: "20px", borderTop: "1px solid rgba(255,255,255,0.05)", position: "relative" }}>
