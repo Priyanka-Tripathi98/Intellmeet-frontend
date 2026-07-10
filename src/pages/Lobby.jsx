@@ -13,17 +13,22 @@ function Lobby() {
   const [isCamOn, setIsCamOn] = useState(true);
   const [participantCount, setParticipantCount] = useState(0);
 
-  // Retrieve the name saved during the first step
+  // Retrieve the name saved during the name form step
   const savedName = localStorage.getItem("userName") || "Participant";
 
-  // 1. Define startPreview out here using useCallback so it's accessible everywhere
+  // 1. Unified function to acquire or re-acquire the stream based on hardware state
   const startPreview = useCallback(async () => {
     try {
-      // Respect the user's camera toggle state when requesting media
+      // If a track is already active, kill it cleanly before requesting a new config
+      if (stream) {
+        stream.getTracks().forEach((track) => track.stop());
+      }
+
       const mediaStream = await navigator.mediaDevices.getUserMedia({
         video: isCamOn,
-        audio: true,
+        audio: isMicOn,
       });
+      
       setStream(mediaStream);
       if (videoRef.current) {
         videoRef.current.srcObject = mediaStream;
@@ -31,14 +36,15 @@ function Lobby() {
     } catch (err) {
       console.error("Access denied or no devices found:", err);
     }
-  }, [isCamOn]);
+  }, [isCamOn, isMicOn]);
 
-  // 2. Safely call it on component mount
+  // 2. React to hardware toggles safely without creating infinite mounting loops
   useEffect(() => {
     startPreview();
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isCamOn]); 
 
-  // 3. Separate cleanup handler that accurately watches the stream state changes
+  // 3. Separate cleanup handler when components unmount completely
   useEffect(() => {
     return () => {
       if (stream) {
@@ -73,30 +79,29 @@ function Lobby() {
   };
 
   const toggleVideo = () => {
-    if (stream) {
-      const videoTrack = stream.getVideoTracks()[0];
-      if (videoTrack) {
-        videoTrack.enabled = !isCamOn;
-        setIsCamOn(!isCamOn);
+    if (isCamOn) {
+      // Turning off track
+      if (stream) {
+        stream.getVideoTracks().forEach((track) => track.stop());
       }
-    } else if (!isCamOn) {
-      startPreview(); 
+      setStream(null);
+      setIsCamOn(false);
+    } else {
+      // Turning on track
       setIsCamOn(true);
     }
   };
 
   const handleJoin = () => {
-    // Stop the local preview tracks so they don't lock up the camera device
     if (stream) {
       stream.getTracks().forEach((track) => track.stop());
     }
     
-    // ✅ NAVIGATE TO THE VIDEO ROOM: Passes the hardware configuration states safely 
-    navigate(`/meeting/${roomId}`, { 
+    navigate(`/meeting/${roomId}/room`, { 
       state: { 
         startWithAudio: isMicOn, 
         startWithVideo: isCamOn,
-        fromLobby: true // Tells Video.jsx that they already passed your workflow steps!
+        fromLobby: true 
       } 
     });
   };
