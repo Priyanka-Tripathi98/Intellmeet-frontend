@@ -1061,67 +1061,38 @@ function Video() {
             <div ref={chatEndRef} />
           </div>
 
-          {/* EMOJI COMPONENT PORTAL INJECTOR */}
-          {showEmojiPicker && (
-            <div style={{ position: "absolute", bottom: "80px", right: "20px", zIndex: 100 }}>
-              <EmojiPicker theme="dark" onEmojiClick={onEmojiClick} />
-            </div>
-          )}
-
-          {/* COMPACT DASHBOARD CONTROL AND TEXT FIELD INTERFACE */}
-          <div
-            style={{
-              padding: "16px",
-              borderTop: "1px solid rgba(255,255,255,0.06)",
-              backgroundColor: "#060816",
-              display: "flex",
-              alignItems: "center",
-              gap: "10px",
-              position: "relative"
-            }}
-          >
-            <button
-              onClick={() => setShowEmojiPicker(!showEmojiPicker)}
-              style={{ background: "none", border: "none", color: "#9ca3af", cursor: "pointer", display: "flex", alignItems: "center" }}
-            >
-              <Smile size={20} />
-            </button>
+          <div style={{ padding: '12px', borderTop: '1px solid rgba(255,255,255,0.05)', position: 'relative' }}>
             
-            <input
-              type="text"
-              placeholder="Send message to room tracks..."
-              value={message}
-              onChange={handleInputChange}
-              onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-              style={{
-                flex: 1,
-                background: "#111827",
-                border: "1px solid rgba(255,255,255,0.08)",
-                borderRadius: "8px",
-                padding: "10px 12px",
-                color: "#ffffff",
-                fontSize: "14px",
-                outline: "none",
-              }}
-            />
+            {showEmojiPicker && (
+              <div style={{ position: 'absolute', bottom: '70px', right: '10px', zIndex: 1000 }}>
+                <EmojiPicker 
+                  theme="dark"
+                  onEmojiClick={(emojiData) => {
+                    setMessage((prev) => prev + emojiData.emoji);
+                    setShowEmojiPicker(false);
+                  }} 
+                />
+              </div>
+            )}
 
-            <button
-              onClick={sendMessage}
-              style={{
-                background: "#7c3aed",
-                border: "none",
-                borderRadius: "8px",
-                width: "36px",
-                height: "36px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                color: "#ffffff",
-                cursor: "pointer",
-              }}
-            >
-              <Send size={16} />
-            </button>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'rgba(255,255,255,0.03)', padding: '4px 8px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
+              
+              <input
+                type="text"
+                value={message}
+                onChange={handleInputChange}
+                placeholder="Message clean room sync..."
+                onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
+                style={{ flex: 1, background: 'none', border: 'none', color: '#fff', outline: 'none', fontSize: '14px' }}
+              />
+
+              <button 
+                onClick={sendMessage}
+                style={{ background: '#7c3aed', border: 'none', borderRadius: '6px', color: '#fff', padding: '6px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+              >
+                <Send size={14} />
+              </button>
+            </div>
           </div>
         </div>
       )}
