@@ -13,32 +13,27 @@ function MeetingsView({ meetings = [] }) {
 
   const currentTime = Date.now();
 
- // FIX: Explicitly exclude 'completed' meetings, but include 'active' regardless of time
-  const upcomingMeetings = meetings.filter((meeting) => {
+    const upcomingMeetings = meetings.filter((meeting) => {
     const status = meeting.status?.toLowerCase();
+    
     if (status === "completed" || status === "ended") return false;
-    if (status === "active") return true; // Keep active meetings here!
+    if (status === "scheduled" || status === "active") return true; 
 
-    const meetingTime = new Date(
-      meeting.time || meeting.startTime
-    ).getTime();
-
-    return meetingTime > Date.now();
+    const meetingTime = new Date(meeting.time || meeting.startTime).getTime();
+    return meetingTime > currentTime;
   });
 
-  // FIX: Include 'completed' meetings OR meetings that have passed and are NOT active
-  const pastMeetings = meetings.filter((meeting) => {
+
+    const pastMeetings = meetings.filter((meeting) => {
     const status = meeting.status?.toLowerCase();
+    
+    if (status === "active" || status === "scheduled") return false;
     if (status === "completed" || status === "ended") return true;
-    if (status === "active") return false; // Prevent active meetings from slipping into history
 
-    const meetingTime = new Date(
-      meeting.time || meeting.startTime
-    ).getTime();
-
+    const meetingTime = new Date(meeting.time || meeting.startTime).getTime();
     return meetingTime <= currentTime;
   });
-  
+
   const currentDisplayList =
     activeTab === "upcoming"
       ? upcomingMeetings
