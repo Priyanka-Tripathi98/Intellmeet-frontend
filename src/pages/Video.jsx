@@ -903,20 +903,15 @@ function Video() {
                     {currentUserName ? currentUserName.charAt(0) : "U"}
                   </span>
                 </div>
-                <span style={{ fontSize: "13px", color: "#6b7280", display: "flex", alignItems: "center", gap: "6px" }}>
-                  <VideoOff size={15} /> Your Camera is Off
-                </span>
+                <span style={{ fontSize: "14px", color: "#6b7280" }}>Your camera is off</span>
               </div>
             )}
-            <div style={{ position: "absolute", bottom: "16px", left: "16px", zIndex: 5, background: "rgba(6, 8, 22, 0.6)", backdropFilter: "blur(8px)", padding: "6px 14px", borderRadius: "8px", fontSize: "13px", fontWeight: "500", border: "1px solid rgba(255,255,255,0.05)", display: "flex", alignItems: "center", gap: "8px" }}>
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "18px", height: "18px", borderRadius: "50%", background: "rgba(124, 58, 237, 0.2)", border: "1px solid rgba(124, 58, 237, 0.4)" }}>
-                <User size={10} style={{ color: "#c084fc" }} />
-              </div>
+            <div style={{ position: "absolute", bottom: "12px", left: "12px", background: "rgba(0,0,0,0.6)", padding: "4px 10px", borderRadius: "6px", fontSize: "12px", zIndex: 5 }}>
               {currentUserName} (You)
             </div>
           </div>
 
-          {/* REMOTE PEERS' WINDOWS */}
+          {/* REMOTE PARTICIPANT WINDOWS */}
           {peers.map((peerObj) => (
             <div
               key={peerObj.peerID}
@@ -924,7 +919,7 @@ function Video() {
                 position: "relative",
                 background: "#000000",
                 borderRadius: "16px",
-                border: peerObj.isVideoActive !== false ? "1px solid rgba(255,255,255,0.08)" : "1px solid rgba(124, 58, 237, 0.15)",
+                border: "1px solid rgba(255,255,255,0.08)",
                 overflow: "hidden",
                 boxShadow: "0 10px 30px rgba(0,0,0,0.5)",
                 aspectRatio: "16 / 9",
@@ -938,368 +933,120 @@ function Video() {
                 userName={peerObj.userName} 
                 isVideoActive={peerObj.isVideoActive} 
               />
-              <div style={{ position: "absolute", bottom: "16px", left: "16px", zIndex: 5, background: "rgba(6, 8, 22, 0.6)", backdropFilter: "blur(8px)", padding: "6px 14px", borderRadius: "8px", fontSize: "13px", fontWeight: "500", border: "1px solid rgba(255,255,255,0.05)" }}>
+              <div style={{ position: "absolute", bottom: "12px", left: "12px", background: "rgba(0,0,0,0.6)", padding: "4px 10px", borderRadius: "6px", fontSize: "12px", zIndex: 5 }}>
                 {peerObj.userName || "Participant"}
               </div>
             </div>
           ))}
         </div>
 
-        {/* BOTTOM FLOATING MEDIA CONTROL PANEL */}
+        {/* FLOATING ACTION BOTTOM BAR */}
         <div
           style={{
-            padding: "20px 32px",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            position: "relative",
-            backgroundColor: "rgba(6, 8, 22, 0.7)",
+            gap: "14px",
+            padding: "20px",
+            backgroundColor: "rgba(6, 8, 22, 0.85)",
             backdropFilter: "blur(16px)",
-            borderTop: "1px solid rgba(255,255,255,0.04)",
+            borderTop: "1px solid rgba(255,255,255,0.05)",
           }}
         >
-          <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
-            {/* MIC TOGGLE BUTTON */}
-            <button
-              onClick={toggleMute}
-              style={{
-                width: "46px",
-                height: "46px",
-                borderRadius: "12px",
-                border: "none",
-                background: isMicOn ? "rgba(255, 255, 255, 0.06)" : "#ef4444",
-                color: "#ffffff",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                cursor: "pointer",
-                transition: "all 0.2s ease",
-                boxShadow: isMicOn ? "none" : "0 4px 14px rgba(239, 68, 68, 0.3)",
-              }}
-              title={isMicOn ? "Mute Microphone" : "Unmute Microphone"}
-            >
-              {isMicOn ? <Mic size={20} /> : <MicOff size={20} />}
+          <button onClick={toggleMute} style={{ width: "48px", height: "48px", borderRadius: "50%", border: "none", backgroundColor: isMicOn ? "rgba(255,255,255,0.08)" : "#ef4444", color: "#ffffff", display: "flex", alignItems: "center", justifyConent: "center", cursor: "pointer", transition: "0.2s" }}>
+            {isMicOn ? <Mic size={20} style={{ margin: "auto" }} /> : <MicOff size={20} style={{ margin: "auto" }} />}
+          </button>
+
+          <button onClick={toggleCamera} style={{ width: "48px", height: "48px", borderRadius: "50%", border: "none", backgroundColor: isCamOn ? "rgba(255,255,255,0.08)" : "#ef4444", color: "#ffffff", display: "flex", alignItems: "center", justifyConent: "center", cursor: "pointer", transition: "0.2s" }}>
+            {isCamOn ? <VideoIcon size={20} style={{ margin: "auto" }} /> : <VideoOff size={20} style={{ margin: "auto" }} />}
+          </button>
+
+          <button onClick={toggleScreenShare} style={{ width: "48px", height: "48px", borderRadius: "50%", border: "none", backgroundColor: isSharingScreen ? "#10b981" : "rgba(255,255,255,0.08)", color: "#ffffff", display: "flex", alignItems: "center", justifyConent: "center", cursor: "pointer", transition: "0.2s" }}>
+            <Monitor size={20} style={{ margin: "auto" }} />
+          </button>
+
+          {isSharingScreen && (
+            <button onClick={() => setIsAnnotationEnabled(!isAnnotationEnabled)} style={{ width: "48px", height: "48px", borderRadius: "50%", border: "none", backgroundColor: isAnnotationEnabled ? "#7c3aed" : "rgba(255,255,255,0.08)", color: "#ffffff", display: "flex", alignItems: "center", justifyConent: "center", cursor: "pointer", transition: "0.2s" }}>
+              <Sparkles size={20} style={{ margin: "auto" }} />
             </button>
+          )}
 
-            {/* CAMERA TOGGLE BUTTON */}
-            <button
-              onClick={toggleCamera}
-              style={{
-                width: "46px",
-                height: "46px",
-                borderRadius: "12px",
-                border: "none",
-                background: isCamOn ? "rgba(255, 255, 255, 0.06)" : "#ef4444",
-                color: "#ffffff",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                cursor: "pointer",
-                transition: "all 0.2s ease",
-                boxShadow: isCamOn ? "none" : "0 4px 14px rgba(239, 68, 68, 0.3)",
-              }}
-              title={isCamOn ? "Turn Camera Off" : "Turn Camera On"}
-            >
-              {isCamOn ? <VideoIcon size={20} /> : <VideoOff size={20} />}
-            </button>
+          <button onClick={isRecording ? stopRecording : startRecording} style={{ width: "48px", height: "48px", borderRadius: "50%", border: "none", backgroundColor: isRecording ? "#ef4444" : "rgba(255,255,255,0.08)", color: "#ffffff", display: "flex", alignItems: "center", justifyConent: "center", cursor: "pointer", transition: "0.2s" }}>
+            {isRecording ? <Square size={18} style={{ margin: "auto" }} /> : <Circle size={18} style={{ fill: "#ef4444", stroke: "#ef4444", margin: "auto" }} />}
+          </button>
 
-            {/* SCREEN SHARE BUTTON */}
-            <button
-              onClick={toggleScreenShare}
-              disabled={isSharingScreen || !!presenterSocketId}
-              style={{
-                width: "46px",
-                height: "46px",
-                borderRadius: "12px",
-                border: "none",
-                background: isSharingScreen ? "#10b981" : "rgba(255, 255, 255, 0.06)",
-                color: isSharingScreen || !presenterSocketId ? "#ffffff" : "#4b5563",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                cursor: isSharingScreen || !presenterSocketId ? "pointer" : "not-allowed",
-                transition: "all 0.2s ease",
-              }}
-              title={isSharingScreen ? "Sharing Screen" : "Share Screen"}
-            >
-              <Monitor size={20} />
-            </button>
+          <button onClick={() => setIsChatOpen(!isChatOpen)} style={{ width: "48px", height: "48px", borderRadius: "50%", border: "none", backgroundColor: isChatOpen ? "#7c3aed" : "rgba(255,255,255,0.08)", color: "#ffffff", display: "flex", alignItems: "center", justifyConent: "center", cursor: "pointer", transition: "0.2s" }}>
+            <MessageSquare size={20} style={{ margin: "auto" }} />
+          </button>
 
-            {/* DRAW ANNOTATION COMPONENT TOGGLE */}
-            {(isSharingScreen || presenterSocketId) && (
-              <button
-                onClick={() => {
-                  setIsAnnotationEnabled(!isAnnotationEnabled);
-                  if (isAnnotationEnabled && socketRef.current) {
-                    socketRef.current.emit("clear-annotations-request", { roomId });
-                  }
-                }}
-                style={{
-                  width: "46px",
-                  height: "46px",
-                  borderRadius: "12px",
-                  border: "none",
-                  background: isAnnotationEnabled ? "#db2777" : "rgba(255, 255, 255, 0.06)",
-                  color: "#ffffff",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  cursor: "pointer",
-                  transition: "all 0.2s ease",
-                }}
-                title={isAnnotationEnabled ? "Disable Annotations" : "Enable Annotations"}
-              >
-                <Circle size={20} fill={isAnnotationEnabled ? "#ffffff" : "none"} />
-              </button>
-            )}
-
-            {/* CLOUD RECORDER TOGGLE BUTTON */}
-            <button
-              onClick={isRecording ? stopRecording : startRecording}
-              style={{
-                width: "46px",
-                height: "46px",
-                borderRadius: "12px",
-                border: "none",
-                background: isRecording ? "#ef4444" : "rgba(255, 255, 255, 0.06)",
-                color: "#ffffff",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                cursor: "pointer",
-                transition: "all 0.2s ease",
-                boxShadow: isRecording ? "0 4px 14px rgba(239, 68, 68, 0.2)" : "none",
-              }}
-              title={isRecording ? "Stop Recording Session" : "Start Cloud Recording"}
-            >
-              <Square size={18} fill={isRecording ? "#ffffff" : "none"} style={{ color: isRecording ? "#fff" : "inherit" }} />
-            </button>
-
-            {/* SIDEBAR TOGGLE BUTTON */}
-            <button
-              onClick={() => {
-                setIsChatOpen(!isChatOpen);
-                setShowEmojiPicker(false);
-              }}
-              style={{
-                width: "46px",
-                height: "46px",
-                borderRadius: "12px",
-                border: "none",
-                background: isChatOpen ? "linear-gradient(135deg, #7c3aed, #6366f1)" : "rgba(255, 255, 255, 0.06)",
-                color: "#ffffff",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                cursor: "pointer",
-                transition: "all 0.2s ease",
-              }}
-              title="Toggle Room Dashboard"
-            >
-              <MessageSquare size={20} />
-            </button>
-
-            <div style={{ width: "1px", height: "24px", background: "rgba(255,255,255,0.1)", margin: "0 4px" }} />
-
-            {/* END VIDEO MEETING CALL BUTTON */}
-            <button
-              onClick={endCall}
-              style={{
-                height: "46px",
-                padding: "0 20px",
-                borderRadius: "12px",
-                border: "none",
-                background: "#ef4444",
-                color: "#ffffff",
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-                fontSize: "14px",
-                fontWeight: "600",
-                cursor: "pointer",
-                transition: "all 0.2s ease",
-                boxShadow: "0 4px 14px rgba(239, 68, 68, 0.3)",
-              }}
-            >
-              <PhoneOff size={16} /> End Call
-            </button>
-          </div>
+          <button onClick={endCall} style={{ padding: "0 24px", height: "48px", borderRadius: "24px", border: "none", backgroundColor: "#ef4444", color: "#ffffff", display: "flex", alignItems: "center", gap: "8px", fontWeight: "600", cursor: "pointer", transition: "0.2s" }}>
+            <PhoneOff size={18} /> End Call
+          </button>
         </div>
       </div>
 
-      {/* RIGHT SIDE: INTERACTIVE HUB SIDEBAR CHAT PANEL */}
+      {/* RIGHT SIDEBAR: INTELLIGENT COMPANION & CHATPANEL */}
       {isChatOpen && (
         <div
           style={{
-            width: "360px",
+            width: "380px",
             background: "#0b0f19",
             borderLeft: "1px solid rgba(255,255,255,0.05)",
             display: "flex",
             flexDirection: "column",
-            height: "100%",
-            boxShadow: "-10px 0 30px rgba(0,0,0,0.25)",
           }}
         >
-          {/* HUB TABS TITLE SECTION */}
-          <div style={{ padding: "20px 24px", borderBottom: "1px solid rgba(255,255,255,0.05)", display: "flex", alignItems: "center", gap: "10px" }}>
-            <MessageSquare size={18} style={{ color: "#a78bfa" }} />
+          {/* HEADER CHAT SELECTIONS */}
+          <div style={{ padding: "20px", borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
             <h3 style={{ margin: 0, fontSize: "16px", fontWeight: "600" }}>Room Dashboard</h3>
           </div>
 
-          {/* LIVE CONVERSATION TIMELINE CHAT STREAM */}
-          <div
-            style={{
-              flex: 1,
-              padding: "24px",
-              overflowY: "auto",
-              display: "flex",
-              flexDirection: "column",
-              gap: "16px",
-            }}
-          >
-            {messages.map((msg, index) => {
-              const isMe = msg.sender === currentUserName;
-              const isAI = msg.sender === "AI";
-              
-              let bubbleBg = "rgba(255,255,255,0.03)";
-              let textColor = "#f3f4f6";
-              let alignSelf = "flex-start";
-              let borderStyle = "1px solid rgba(255,255,255,0.04)";
+          {/* TRANSCRIPT & NOTES BOX (AI SUMMARY VIEWPORT)
+          <AICompanion 
+            aiState={aiLiveState} 
+            meetingNotes={meetingNotes} 
+            liveTranscript={liveTranscript} 
+          /> */}
 
-              if (isMe) {
-                bubbleBg = "linear-gradient(135deg, #7c3aed, #6366f1)";
-                alignSelf = "flex-end";
-                borderStyle = "none";
-              } else if (isAI) {
-                bubbleBg = "rgba(124, 58, 237, 0.08)";
-                borderStyle = "1px solid rgba(124, 58, 237, 0.25)";
-              }
-
-              return (
-                <div
-                  key={index}
-                  style={{
-                    alignSelf: alignSelf,
-                    maxWidth: "85%",
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "4px",
-                  }}
-                >
-                  <span style={{ fontSize: "11px", color: isAI ? "#c084fc" : "#9ca3af", fontWeight: "500", paddingLeft: isMe ? "0" : "4px", paddingRight: isMe ? "4px" : "0", textAlign: isMe ? "right" : "left", display: "flex", alignItems: "center", gap: "4px", justifyContent: isMe ? "flex-end" : "flex-start" }}>
-                    {isAI && <Sparkles size={10} />} {msg.sender}
-                  </span>
-                  <div
-                    style={{
-                      background: bubbleBg,
-                      color: textColor,
-                      padding: "10px 14px",
-                      borderRadius: isMe ? "14px 14px 2px 14px" : "14px 14px 14px 2px",
-                      fontSize: "14px",
-                      lineHeight: "1.4",
-                      border: borderStyle,
-                      boxShadow: isMe ? "0 4px 12px rgba(124, 58, 237, 0.15)" : "none",
-                      wordBreak: "break-word"
-                    }}
-                  >
-                    {msg.message}
-                  </div>
+          {/* CHAT MESSAGES DISPLAY STAGE */}
+          <div style={{ flex: 1, padding: "20px", overflowY: "auto", display: "flex", flexDirection: "column", gap: "12px" }}>
+            {messages.map((msg, index) => (
+              <div 
+                key={index} 
+                style={{ 
+                  alignSelf: msg.sender === currentUserName ? "flex-end" : "flex-start",
+                  maxWidth: "80%",
+                  background: msg.sender === "AI" ? "linear-gradient(135deg, rgba(124,58,237,0.2), rgba(99,102,241,0.2))" : msg.sender === currentUserName ? "#7c3aed" : "rgba(255,255,255,0.06)",
+                  border: msg.sender === "AI" ? "1px solid rgba(124,58,237,0.3)" : "none",
+                  padding: "10px 14px",
+                  borderRadius: "12px",
+                }}
+              >
+                <div style={{ fontSize: "11px", color: msg.sender === "AI" ? "#c084fc" : "rgba(255,255,255,0.5)", marginBottom: "4px", fontWeight: "600" }}>
+                  {msg.sender}
                 </div>
-              );
-            })}
+                <div style={{ fontSize: "14px", wordBreak: "break-word" }}>{msg.message}</div>
+              </div>
+            ))}
             <div ref={chatEndRef} />
           </div>
 
-          {/* CHAT INPUT FORM AND FLOATING EMOJI PICKER CONTROLLER CONTAINER */}
-          <div style={{ padding: "16px 20px", borderTop: "1px solid rgba(255,255,255,0.05)", position: "relative" }}>
-            
-            {/* FLOATING DARK MENU WINDOW CONTAINER FOR EMOJI MENUS */}
-            {showEmojiPicker && (
-              <div style={{ 
-                position: "absolute", 
-                bottom: "76px", 
-                right: "16px", 
-                zIndex: 1000,
-                boxShadow: "0 10px 25px rgba(0,0,0,0.5)" 
-              }}>
-                <EmojiPicker 
-                  theme="dark" 
-                  height={350}
-                  width={300}
-                  onEmojiClick={(emojiData) => {
-                    setMessage((prev) => prev + emojiData.emoji);
-                    setShowEmojiPicker(false);
-                  }} 
-                />
-              </div>
-            )}
-
-            {/* GLASSMORPHIC INNER TEXT CONTAINER STYLING BLOCK */}
-            <div style={{ display: "flex", alignItems: "center", gap: "10px", background: "rgba(255,255,255,0.02)", padding: "6px 12px", borderRadius: "10px", border: "1px solid rgba(255,255,255,0.05)" }}>
-              
-              {/* EMOJI TOGGLE POPUP BUTTON TRIGER */}
-              <button
-                type="button"
-                onClick={() => setShowEmojiPicker(!showEmojiPicker)}
-                style={{
-                  background: "none",
-                  border: "none",
-                  color: showEmojiPicker ? "#a78bfa" : "#9ca3af",
-                  fontSize: "18px",
-                  cursor: "pointer",
-                  display: "flex",
-                  alignItems: "center",
-                  padding: "4px",
-                  transition: "color 0.2s"
-                }}
-                title="Add Emoji"
-              >
-                😊
-              </button>
-
+          {/* INPUT BAR SYSTEM */}
+          <div style={{ padding: "20px", borderTop: "1px solid rgba(255,255,255,0.05)", position: "relative" }}>
+            <div style={{ display: "flex", gap: "10px" }}>
               <input
                 type="text"
                 value={message}
                 onChange={handleInputChange}
-                placeholder="Type a message..."
                 onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-                style={{
-                  flex: 1,
-                  background: "none",
-                  border: "none",
-                  color: "#ffffff",
-                  outline: "none",
-                  fontSize: "14px",
-                  padding: "6px 0",
-                }}
+                placeholder="Message clean room sync..."
+                style={{ flex: 1, background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "8px", padding: "10px 14px", color: "#ffffff", fontSize: "14px" }}
               />
-              <button
-                onClick={sendMessage}
-                style={{
-                  background: "linear-gradient(135deg, #7c3aed, #6366f1)",
-                  border: "none",
-                  borderRadius: "8px",
-                  color: "#ffffff",
-                  width: "32px",
-                  height: "32px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  cursor: "pointer",
-                  transition: "transform 0.1s ease",
-                }}
-              >
-                <Send size={14} />
+              <button onClick={sendMessage} style={{ backgroundColor: "#7c3aed", color: "#ffffff", border: "none", borderRadius: "8px", width: "38px", height: "38px", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>
+                <Send size={16} />
               </button>
             </div>
           </div>
-
-          {/* COPILOT ENGINE WRAPPER PLATFORM */}
-          <AICompanion 
-            meetingNotes={meetingNotes} 
-            liveTranscript={liveTranscript} 
-            aiLiveState={aiLiveState} 
-          />
         </div>
       )}
     </div>
