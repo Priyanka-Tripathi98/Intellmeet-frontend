@@ -264,11 +264,8 @@ export function Dashboard() {
   const recentMeetings = meetings.filter((meeting) => {
     const status = meeting.status?.toLowerCase();
     
-    if (status === "completed" || status === "ended") return true;
-    if (status === "scheduled" || status === "active") return false;
-
-    const meetingTime = getMeetingTime(meeting);
-    return meetingTime > 0 && meetingTime <= currentTimestamp;
+    // Explicitly ONLY allow completed or ended meetings to show up here
+    return status === "completed" || status === "ended";
   });
 
   const renderMainContent = () => {
