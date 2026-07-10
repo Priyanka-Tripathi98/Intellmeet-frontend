@@ -1077,6 +1077,13 @@ function Video() {
 
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'rgba(255,255,255,0.03)', padding: '4px 8px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
               
+              <button 
+      type="button"
+      onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+      style={{ background: 'none', border: 'none', color: showEmojiPicker ? '#a78bfa' : '#9ca3af', cursor: 'pointer', display: 'flex', alignItems: 'center', padding: '4px', fontSize: '16px' }}
+    >
+      😊
+    </button>
               <input
                 type="text"
                 value={message}
