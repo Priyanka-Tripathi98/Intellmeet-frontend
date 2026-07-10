@@ -296,7 +296,7 @@ export function Dashboard() {
                 </button>
               </div>
 
-              <div className="meeting-panel">
+              <div className="meeting">
                 <h2>Recent Meetings</h2>
                 {recentMeetings.length > 0 ? (
                   recentMeetings.map((meeting) => (

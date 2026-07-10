@@ -376,7 +376,14 @@ li span a, li a {
   display: flex;
   flex-direction: column;
 }
-
+.meeting{
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
 .meeting-panel h2 {
   font-size: 20px;
   margin-bottom: 16px;
