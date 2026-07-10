@@ -255,7 +255,7 @@ export function Dashboard() {
   const upcomingMeetings = meetings.filter((meeting) => {
     const status = meeting.status?.toLowerCase();
     if (status === "completed" || status === "ended") return false;
-    if (status === "active") return true;
+    if (status === "active" || status === "scheduled") return true;
 
     const meetingTime = getMeetingTime(meeting);
     return meetingTime > currentTimestamp;
